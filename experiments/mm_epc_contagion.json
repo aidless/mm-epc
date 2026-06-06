@@ -1,0 +1,60 @@
+{
+  "phase": "1.2_contagion",
+  "rounds": 6,
+  "gamma_TV": 0.8323,
+  "gamma_VT": 0.8467,
+  "asymmetry": 0.0086,
+  "asymmetric": true,
+  "w_T_pure": {
+    "synthesis": 0.166,
+    "critical_check": 0.16,
+    "first_principles": 0.092,
+    "creative_leap": 0.092,
+    "analogy_meta": 0.092,
+    "evidence_cite": 0.092,
+    "counterfactual": 0.092,
+    "aesthetic_frame": 0.056,
+    "visual_grounding": 0.055,
+    "spatial_decompose": 0.053,
+    "step_by_step": 0.051
+  },
+  "w_V_pure": {
+    "step_by_step": 0.284,
+    "creative_leap": 0.131,
+    "counterfactual": 0.126,
+    "critical_check": 0.057,
+    "first_principles": 0.057,
+    "analogy_meta": 0.057,
+    "evidence_cite": 0.057,
+    "synthesis": 0.057,
+    "visual_grounding": 0.057,
+    "spatial_decompose": 0.057,
+    "aesthetic_frame": 0.057
+  },
+  "w_TV_contagion": {
+    "synthesis": 0.223,
+    "first_principles": 0.151,
+    "counterfactual": 0.117,
+    "creative_leap": 0.082,
+    "analogy_meta": 0.082,
+    "evidence_cite": 0.082,
+    "critical_check": 0.069,
+    "aesthetic_frame": 0.05,
+    "visual_grounding": 0.049,
+    "spatial_decompose": 0.048,
+    "step_by_step": 0.046
+  },
+  "w_VT_contagion": {
+    "step_by_step": 0.255,
+    "aesthetic_frame": 0.125,
+    "first_principles": 0.123,
+    "creative_leap": 0.118,
+    "analogy_meta": 0.084,
+    "counterfactual": 0.074,
+    "critical_check": 0.051,
+    "evidence_cite": 0.051,
+    "synthesis": 0.051,
+    "spatial_decompose": 0.051,
+    "visual_grounding": 0.014
+  }
+}

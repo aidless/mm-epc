@@ -1,0 +1,27 @@
+{
+  "name": "MM_EPC",
+  "rounds": 16,
+  "pci": 1.4644,
+  "text_pci": 1.3484,
+  "visual_pci": 1.4644,
+  "cpci": 0.0433,
+  "mpci": 1.4281,
+  "top": "step_by_step",
+  "top_w": 0.484,
+  "text_top": "step_by_step",
+  "visual_top": "step_by_step",
+  "weights": {
+    "step_by_step": 0.484,
+    "critical_check": 0.033,
+    "first_principles": 0.06,
+    "creative_leap": 0.02,
+    "analogy_meta": 0.027,
+    "evidence_cite": 0.192,
+    "synthesis": 0.06,
+    "counterfactual": 0.034,
+    "visual_grounding": 0.01,
+    "spatial_decompose": 0.021,
+    "aesthetic_frame": 0.06
+  },
+  "time": 209.5
+}

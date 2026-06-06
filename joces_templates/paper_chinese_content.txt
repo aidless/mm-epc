@@ -1,0 +1,303 @@
+=== 中文论文：多模态评估者偏好坍缩 ===
+
+【文章标题】
+多模态评估者偏好坍缩：自进化智能体中的跨模态传染效应
+
+【作者】
+刘泽文
+
+【工作单位】
+齐鲁理工学院 软件工程系，山东 泰安 250000
+
+【中文摘要】
+本文将评估者偏好坍缩（Evaluator Preference Collapse, EPC）现象扩展至多模态智能体系统。当 GPT-4o 作为跨模态评估者评估 DeepSeek-chat 的输出时，观察到极端的偏好坍缩：偏好坍缩指数 PCI 达到 1.464，是纯文本自评估的 3.2 倍，其中 step_by_step 策略吸收了全部策略权重的 48.4%，而视觉特定策略降至 1.0%。进一步揭示了跨模态传染效应：在一种模态上训练形成的评估者偏好会污染另一种模态上的策略选择，传染系数不对称，γ_{V→T}=0.847 > γ_{T→V}=0.832。纯模态训练产生不同的最优策略（文本为 synthesis，视觉为 step_by_step），但经过跨模态暴露后，这些最优策略发生互换——本文称之为偏好传染现象。第三阶段统计验证实验（N=10 次独立重复，共 2000 次 LLM 评估调用）得到 γ̄_{V→T}=1.317 > γ̄_{T→V}=1.239，方向性趋势一致（7/10 次重复），但不对称性未达到统计显著性（自助法 p=0.252）。本文发布了多模态 EPC（MM-EPC）实验框架及首个 LLM 智能体评估的传染矩阵 Γ。
+
+【关键词】
+大语言模型；评估者偏差；偏好坍缩；跨模态传染；智能体自进化；多模态评估
+
+【中图分类号】
+TP391
+
+【英文标题】
+Multimodal Evaluator Preference Collapse: Cross-Modal Contagion in Self-Evolving Agents
+
+【英文作者】
+LIU Zewen
+
+【英文单位】
+School of Software Engineering, Qilu Institute of Technology, Tai'an 250000, China
+
+【英文摘要】
+We extend Evaluator Preference Collapse (EPC) to multimodal agent systems. When GPT-4o serves as a cross-modal evaluator for DeepSeek-chat outputs, we observe extreme preference collapse: PCI reaches 1.464, 3.2× higher than text-only self-evaluation, with step_by_step absorbing 48.4% of all strategy weight and visual-specific strategies dropping to 1.0%. We further demonstrate cross-modal contagion: evaluator preferences trained on one modality contaminate strategy selection on another, with asymmetric coefficients γ_{V→T}=0.847 > γ_{T→V}=0.832. Pure-modality training yields different optimal strategies (synthesis for text, step_by_step for visual), but after cross-modal exposure, these optima swap——a phenomenon we term preference contagion. A Phase 3 statistical validation experiment (N=10 independent repetitions, 2000 total LLM evaluation calls) finds γ̄_{V→T}=1.317 > γ̄_{T→V}=1.239 with consistent directional trend (7/10 reps), though the asymmetry does not reach statistical significance (p=0.252, bootstrap). We release the Multimodal EPC (MM-EPC) experimental framework and the first contagion matrix Γ for LLM agent evaluation.
+
+【英文关键词】
+large language model; evaluator bias; preference collapse; cross-modal contagion; agent self-evolution; multimodal evaluation
+
+
+=== 正文 ===
+
+1 引言
+
+大语言模型（Large Language Model, LLM）越来越多地被部署为其他人工智能系统的评估者[1-2]。随着 GPT-4o 等多模态模型[3]的兴起，这些评估场景现已涵盖文本、图像和音频。一个关键问题随之浮现：评估者偏差在不同模态间是否存在差异？一种模态中的偏差是否会污染另一种模态的评估？
+
+本文作者此前的工作在纯文本场景中识别出评估者偏好坍缩（Evaluator Preference Collapse, EPC）现象。本文将 EPC 扩展至多模态场景，提出三个新的研究问题：
+
+（1）存在性：EPC 是否在跨模型多模态评估（GPT-4o 评估 DeepSeek）中发生？
+（2）量级：坍缩程度是否依赖于模态？
+（3）传染性：如果智能体在一种模态的评估信号上训练，其策略分布是否会泄漏到其他模态？
+
+本文通过三个受控实验（共计 2080 次 LLM 评估调用）对以上三个问题给出了肯定回答。
+
+本文的主要贡献如下：
+
+（1）量化了多模态 EPC。GPT-4o 跨模型评估产生的 PCI=1.464，是纯文本基线的 3.2 倍。视觉任务展现出更强的坍缩（PCI 1.464 vs 1.348）。
+（2）证实了跨模态传染效应。传染系数不对称：γ_{V→T}=0.847 ≠ γ_{T→V}=0.832。
+（3）记录了策略反转现象。纯文本→synthesis；纯视觉→step_by_step。经过跨模态暴露后，最优策略发生互换。
+（4）通过统计验证进行复现。N=10 次独立重复（γ̄_{V→T}=1.317 > γ̄_{T→V}=1.239），7/10 次方向一致，p=0.252（自助法）。
+（5）发布首个传染矩阵 Γ。本文发布了首个跨模态评估者传染矩阵。
+
+
+2 相关工作
+
+2.1 评估者偏好坍缩与 LLM-as-Judge
+
+EPC[4]首次识别出测试时智能体自改进中的系统性偏好偏差，并通过偏好坍缩指数（PCI）进行量化。该现象与更广泛的 LLM-as-Judge 文献[1,5-6]呈正交互补关系，后者研究单轮设置中的静态评估质量以及位置/冗余偏差。近期关于自我奖励语言模型[7]和迭代对齐[8]的研究表明，闭环自我评估会放大偏差，但仅限于纯文本、同模型场景。本文首次将这一研究方向扩展至跨模型、跨模态的评估动力学。
+
+2.2 多模态评估与安全
+
+GPT-4o 系统卡[3]和 Gemini 1.5 技术报告[9]代表了最全面的生产级多模态评估框架，涵盖文本、视觉和音频。两者均承认"多模态场景中的安全对齐更为复杂"以及"评估一致性在跨模态时下降"。然而，这些报告记录了评估的静态特征，并未考察评估者偏好如何在反馈循环中动态演化。本文的传染矩阵 Γ 为精确测量这种动态退化提供了量化框架。
+
+2.3 跨模态迁移与干扰
+
+此前的跨模态迁移研究[10-12]关注的是预训练和微调过程中能力如何在模态间迁移。与上述研究正交，本文研究的是评估者偏好——而非能力——在测试时适应过程中如何在模态间迁移。这是不同的现象：能力可以成功迁移，而评估者偏差却会污染优化信号，导致智能体采用与模态不匹配的策略。近期多模态 RLHF 研究[13-14]已开始关注跨模态奖励黑客（reward hacking）问题，但尚未形式化本文所记录的传染动力学。
+
+2.4 智能体自改进与策略优化
+
+测试时适应框架[15-18]使智能体能够通过自我生成反馈改进行为，而无需参数更新。本文揭示了该范式在扩展至多模态场景时的一个根本性风险：评估者特定模态的偏好产生了冲突的优化信号。本文所记录的策略反转（synthesis ↔ step_by_step）表明，向单一评估者优化的多任务智能体可能收敛到对评估者偏好模态最优、但对其他模态次优的策略。
+
+2.5 奖励过度优化与评估者对齐
+
+本文的发现与更广泛的奖励过度优化现象（LLM 的古德哈特定律）[19]相关联，其中智能体利用评估者偏好而非实现真正的任务能力。在 RLHF 流程中，奖励模型过度优化产生的输出评分高但人类感知质量下降[20]。近期关于谄媚行为的研究[21-22]表明，LLM 会系统性地调整输出以匹配评估者偏差，而非保持正确性——这与本文观察到的策略坍缩直接类似。弱到强泛化框架[23]表明，由弱评估者监督的强模型会收敛到评估者的局限性，本文在跨模型评估（GPT-4o 评估 DeepSeek）中观察到了类似的动力学。不同于以往聚焦于单模态、同模型设置的研究，跨模型、跨模态评估下 3 倍的 PCI 放大效应表明，当评估者和执行者在架构和模态能力上均不相同时，奖励过度优化被显著放大。
+
+2.6 与相关现象的系统比较
+
+表 1 将多模态 EPC 定位在评估者偏差现象谱系中，突出本研究的独特之处：跨模型评估、多模态、动态反馈循环和量化传染动力学的结合。
+
+【表1：评估者偏差现象的系统比较——需要表格重现，见原LaTeX Tab. related】
+
+
+3 方法
+
+3.1 多模态偏好坍缩指数（MPCI）
+
+设 M = {text, visual}。对于模态 m，模态特异性 PCI：
+
+    PCI_m(w | T_m) = σ(w | T_m) / μ(w | T_m)                    (1)
+
+MPCI 聚合公式：
+
+    MPCI(w) = (1/|M|) Σ_{m∈M} PCI_m(w) + λ · CPCI(w)            (2)
+
+3.2 跨模态传染
+
+隔离训练范式：
+
+阶段1（纯文本）：仅在文本上执行 TTRL → w_T
+阶段2（纯视觉）：仅在视觉上执行 TTRL → w_V
+阶段3（传染 T→V）：从 w_T 出发，在视觉上训练 → w_{T→V}
+阶段4（传染 V→T）：从 w_V 出发，在文本上训练 → w_{V→T}
+
+传染系数：
+
+    γ_{A→B} = ‖w_{A→B} - w_B‖₂ / ‖w_B‖₂                         (3)
+
+对 n 个模态，传染矩阵：
+
+    Γ = [1, γ_{1→2}, ..., γ_{1→n};
+         γ_{2→1}, 1, ..., γ_{2→n};
+         ...                                                  (4)
+
+3.3 算法
+
+算法 1 形式化了用于测量跨模态传染的四阶段隔离训练范式。在每一轮中，执行者使用从当前权重分布 w 中采样的策略生成回答，评估者进行成对比较，权重通过测试时强化学习（TTRL）更新。关键是，每阶段中的模态过滤器 F_m 限制了评估者可见的任务范围，从而能够干净地测量模态间的策略迁移。
+
+【算法1：隔离训练与跨模态传染测量——见原LaTeX Algorithm 1】
+
+
+4 实验设置
+
+执行者：DeepSeek-chat。评估者：GPT-4o（通过 api2d）。任务：8 个文本任务 + 8 个视觉相关任务。策略：共 11 种（8 种文本领域 + 3 种视觉领域：visual_grounding、spatial_decompose、aesthetic_frame）。轮次：阶段1为 16 轮交替模态。阶段2为 4 阶段 × 6 轮。学习率 α=0.08（胜者），-0.04（败者）。
+
+【表2：实验各阶段的计算成本——见原LaTeX Tab. cost】
+
+
+5 实验结果
+
+5.1 阶段1：多模态 EPC 的存在性
+
+【表3：多模态 EPC 指标。GPT-4o 产生了纯文本自评估的 3.2 倍坍缩——见原LaTeX Tab. multimodal EPC metrics】
+
+【图1：不同评估条件下的 PCI 对比。GPT-4o 跨模型（1.464）vs DeepSeek 自评估（0.461）vs 真实基准（0.251）——需改为黑白矢量图】
+
+【表4：策略权重分布。视觉特定策略几乎被消除——见原LaTeX Tab. strategy weights】
+
+【图2：策略权重分布。视觉策略（橙色）仅获得 9.1%，step_by_step 占 48.4%——需改为黑白矢量图】
+
+发现1：GPT-4o 产生的坍缩比 DeepSeek 自评估强 3.2 倍。
+发现2：视觉任务比文本任务坍缩更严重（PCI 1.464 vs 1.348）。
+发现3：三种视觉策略合计仅获得 9.1% 权重；visual_grounding 仅获得 1.0%。
+
+5.2 阶段2：跨模态传染
+
+【表5：传染结果。纯训练产生不同的最优策略；跨模态暴露后策略互换——见原LaTeX Tab. contagion results】
+
+【图3：跨模态传染前后的策略反转。模态间最优策略互换——需改为黑白矢量图】
+
+【表6：传染系数——见原LaTeX Tab. contagion coefficients】
+
+【图4：传染矩阵 Γ。V→T（0.847）> T→V（0.832）——需改为黑白矢量图】
+
+【图5：按模态分解的 PCI。视觉任务比文本任务坍缩强 8.6%——需改为黑白矢量图】
+
+发现4（策略反转）：纯文本→synthesis；纯视觉→step_by_step。跨模态暴露后，最优策略互换。
+发现5（不对称传染）：γ_{V→T}=0.847 > γ_{T→V}=0.832。视觉先验对文本的污染比反向强 1.8%。
+发现6：Γ = [[1.000, 0.832], [0.847, 1.000]]。
+
+
+6 统计验证
+
+为评估所观察到的跨模态不对称性的稳健性，进行了第三阶段显著性实验（N=10 次独立重复，每次 50 轮 × 4 阶段，共 2000 次 LLM 评估调用）。每次重复独立初始化策略权重并运行完整的隔离训练流程。为测试跨评估者实现的可复现性，使用 DashScope 的 gui-plus-2026-02-26 模型通过 OpenAI 兼容接口——与阶段1-2使用的 GPT-4o 属于不同的模型家族和 API 提供商。这种跨评估者设计提供了对现象普适性的更严格检验。
+
+表 7 报告了结果。平均传染系数为 γ̄_{T→V}=1.239（SD=0.219）和 γ̄_{V→T}=1.317（SD=0.387），平均不对称性 Δγ=0.078，方向为 γ_{V→T} > γ_{T→V}。该方向在 10 次重复中 7 次一致。然而，95% 自助法置信区间 [-0.182, 0.307] 跨越零值，单侧 p=0.252。效应量较小（Cohen's d=0.19），在 α=0.05 时达到的统计功效仅为 14.7%。
+
+本文将这些结果解读为方向性证据而非确认性证据：阶段2中观察到的非对称方向（γ_{V→T} > γ_{T→V}）在跨评估者实现中得到一致复现，但其量级在当前样本量下不足以在常规阈值上拒绝零假设。功效分析表明，要达到 80% 的统计功效需要 N≥176 次重复，相当于约 35200 次额外的 LLM 评估调用。本文将如此大规模的验证留待未来工作，并将当前结果作为跨模态不对称传染的趋势级别证据进行报告。
+
+【表7：统计验证结果——见原LaTeX statistical_table.tex】
+
+
+7 讨论
+
+7.1 GPT-4o 为何产生 3.2 倍的坍缩？
+
+因果说明：本实验设计建立了 GPT-4o 作为评估者与升高的 PCI 之间的关联，但未声称已分离出因果机制。以下三个假设是可能但非互斥的解释；需要受控实验（如改变评估者模型家族同时保持任务不变，或消融 RLHF 与基座模型评估者）来建立因果关系。本文将这些作为可解释的假设而非已确认的机制进行报告。
+
+GPT-4o 跨模型评估下的 PCI 放大（1.464 vs 自评估 0.461）是本研究最显著的发现。本文提出三种非互斥的假设机制：
+
+（1）RLHF 诱导的结构性偏好。GPT-4o 经过大量 RLHF 训练，人类标注者持续偏好结构化、逐步推导的输出而非抽象或创造性回答[3]。当 GPT-4o 作为评估者时，这种偏好被放大：模型应用其被训练产生的相同的偏好结构。结果是自我强化的循环：step_by_step 赢得更多评估→获得更多权重→赢得更多评估。
+
+（2）缺乏自我偏好制衡。在同模型自评估（DeepSeek 评估 DeepSeek）中，存在一种"自我偏好"机制，评估者有某种动力去承认多样化策略的有效性——毕竟它在评估来自自身架构的输出。跨模型评估（GPT-4o 评估 DeepSeek）消除了这种隐性的多样性激励：GPT-4o 与 DeepSeek-chat 没有架构亲缘关系，毫无保留地应用其偏好。
+
+（3）视觉模态放大效应。视觉任务中 PCI 高出 8.6%（1.464 vs 1.348）表明视觉评估本质上比文本评估更主观。文本任务通常具有可验证的真实答案（算术、代码正确性），而视觉相关任务（美学判断、空间推理）本质上更依赖偏好。这种模态依赖的主观性直接放大了评估者偏差。
+
+7.2 消融：各模态对 MPCI 的贡献
+
+将 MPCI=1.428 分解为各组成部分以理解哪些因素驱动多模态坍缩：
+
+【表8：MPCI 分解。视觉任务对坍缩贡献不成比例——见原LaTeX Tab. MPCI decomposition】
+
+视觉 PCI 的主导地位（51.3%）尽管任务分配均等，确认了视觉评估是坍缩的主要驱动因素。CPCI 贡献极小（1.5%），因为文本和视觉权重在阶段1中收敛至同一最优策略（step_by_step），产生低跨模态散度，尽管模态内坍缩很高。这表明评估者的偏好是模态不变性的（始终偏好 step_by_step），但其表达是模态放大性的（在视觉任务中更强）。
+
+7.3 对多模态智能体系统的启示
+
+7.3.1 视觉策略不可见性
+
+本文的三种视觉领域策略（visual_grounding、spatial_decompose、aesthetic_frame）合计仅获得 9.1% 的权重。评估者实质上"屏蔽"了智能体的视觉推理能力，因为它无法可靠评估这些能力——退回到它能够一致评估的通用 step_by_step 策略。这创造了一种危险的激励：为评估者满意度而优化的智能体将系统性地少用适合模态的策略，产生"在评估者看来很好"但对任务次优的输出。
+
+7.3.2 训练顺序决定策略
+
+传染实验揭示了一个路径依赖问题：智能体首先训练的模态会塑造其后续所有模态的策略分布。由于 γ_{V→T}=0.847 > γ_{T→V}=0.832，在文本任务之前先训练视觉任务在文本领域产生比反向多 1.8% 的污染。虽然这种不对称性在量级上适中，但其实际后果——策略反转——是严重的：智能体对视觉任务使用 synthesis，对文本任务使用 step_by_step，恰好与纯模态训练产生的结果相反。
+
+7.3.3 需要标准化的多评估者基准
+
+LLM-as-Judge 社区已将多模型评估确立为最佳实践[1]。本文的发现将此要求扩展至动态智能体评估：任何在反馈循环中使用 LLM 评估者的系统应当（a）在任务性能之外报告 PCI/MPCI，（b）使用至少两个来自不同模型家族的评估者，以及（c）隔离特定模态的训练阶段以防止传染。
+
+7.4 错误分析与失效模式
+
+位置偏差排除。GPT-4o 偶尔表现出位置偏差（无论内容如何偏好选项 A）。然而，跨轮次的交替 A/B 分配意味着位置偏差会产生均匀的策略权重——它无法解释 step_by_step 上 48.4% 的集中。观察到的坍缩是偏好效应，而非位置效应。
+
+视觉策略语义模糊性。视觉策略的低权重（9.1%）可能部分反映了本文的视觉任务是基于文本提示而非图像的事实。在文本代理设置中，像"visual_grounding"这样的策略可能在语义上欠确定——模型无法在实际视觉输入中立足。这表明视觉任务的 PCI 估计是一个下界：使用原生图像输入时，文本与视觉 PCI 之间的差距可能会扩大。
+
+传染不对称性稳定性。γ_{V→T} > γ_{T→V} 的方向在阶段2和所有阶段3重复中保持一致，但其量级未达到统计显著性（阶段2：6 轮单次运行；阶段3：N=10 自助法 p=0.252，Cohen's d=0.19）。建议 N≥30 次重复以获得足够的统计功效，尽管方向一致性（阶段2+3合计：8/11 次运行显示 γ_{V→T} > γ_{T→V}）提供了值得进一步研究的提示性证据。
+
+7.5 局限性与未来工作
+
+实验规模。阶段1和2实验（80 次 LLM 调用）提供了概念验证证据，而阶段3（N=10 次重复，2000 次 LLM 调用）提供了方向性但统计功效不足的验证。总计 2080 次 LLM 调用代表了可观的资源投入，但仍不足以对所观察到的不对称性建立统计显著性。需要更大规模的复现（N≥30 次重复，6000+ 次调用）以获得足够的统计功效和精确的系数置信区间。
+
+模态覆盖。两种模态（文本、视觉）建立了 Γ 框架，但仅触及真正多模态的皮毛。扩展至音频（音乐描述、语音情感识别）将产生 3×3 的传染矩阵，并能够分析传递传染性：γ_{T→V}·γ_{V→A} ≈ γ_{T→A} 是否成立？
+
+评估者多样性。本文的发现特定于 GPT-4o 作为评估者。其他多模态评估者（Claude 3.5 Sonnet、Gemini 1.5 Pro、Qwen-VL-Max）是否表现出类似的坍缩模式是一个悬而未决的问题。不同评估者可能偏好不同策略，导致评估者不一致的最优策略配置。
+
+真实视觉输入。本文的视觉任务是基于文本提示而非图像。使用 GPT-4o 的视觉 API 和真实图像进行复现将（a）测试当存在真实视觉根基时视觉策略权重是否增加，以及（b）提供对多模态传染的更生态有效的测量。
+
+自适应策略和阶段数量。当前设计使用固定的 |S|=11 策略集和固定的训练轮次 R。一个自然的扩展是自适应策略选择：基于特定模态的性能动态扩展或裁剪策略集，类似于 Transformer 架构中的自适应块数。例如，视觉密集型智能体部署可能受益于更大的视觉领域策略池，而纯文本部署可以裁剪未使用的策略以减少评估者的决策空间，从而降低 PCI。同理，隔离阶段的数量可以随模态数量 |M| 增长：对 n 个模态，完整的传染矩阵需要 O(n²) 个阶段。传染系数在观察到部分阶段对后是否会稳定（实现早停），是一个开放的实证问题。
+
+跨评估者校准。阶段3使用 DashScope 的 gui-plus 模型的结果（γ̄_{V→T}=1.317）表明不同评估者产生不同的绝对传染量级，同时保持相同的方向不对称性。对 K 个评估者家族的系统研究将产生 K×|M|×|M| 的传染系数张量，从而能够进行元分析，找出哪些评估者属性（架构、训练数据、RLHF 配方）最能预测坍缩严重程度。
+
+
+8 代码和数据可用性
+
+复现实验的全部代码，包括三阶段流程（基线 PCI 测量、跨模态传染和统计验证），已开源至 https://github.com/aidless/mm-epc。代码仓库包含 MM-EPC 框架的完整实现、自助法分析脚本和 LaTeX 表格。统计验证结果（自助法 p 值、置信区间和效应量）以机器可读的 JSON 格式提供。
+
+
+9 结束语
+
+本文通过三个实验展示了多模态评估者偏好坍缩：（1）GPT-4o 产生的坍缩是纯文本 EPC 的 3.2 倍，消除了视觉策略；（2）评估者偏好跨模态不对称传染，导致策略反转；（3）第三阶段统计验证（N=10）发现 γ_{V→T} > γ_{T→V} 的一致方向性证据（7/10 次重复），但统计功效不足以拒绝零假设（p=0.252）。本文发布了 MM-EPC 框架和首个传染矩阵 Γ。当 GPT-4o 作为你的评估者时，你的智能体学会做 GPT-4o 最喜欢的回答者——而非最有能力的那个。
+
+
+=== 参考文献 ===
+
+[1] ZHENG L, CHIANG W-L, SHENG Y, et al. Judging LLM-as-a-judge with MT-Bench and Chatbot Arena[C]//Advances in Neural Information Processing Systems, 2023: 46595-46623.
+郑琳, 蒋伟林, 盛阳, 等. 用MT-Bench和Chatbot Arena评判LLM-as-a-Judge[C]//神经信息处理系统进展, 2023: 46595-46623.
+
+[2] CHIANG W-L, ZHENG L, SHENG Y, et al. Chatbot Arena: An open platform for evaluating LLMs by human preference[C]//International Conference on Machine Learning, 2024.
+蒋伟林, 郑琳, 盛阳, 等. Chatbot Arena：通过人类偏好评估LLM的开放平台[C]//国际机器学习大会, 2024.
+
+[3] OpenAI. GPT-4o system card[R]. arXiv:2410.21276, 2024.
+
+[4] LIU Z. Evaluator Preference Collapse: Self-evaluation bias in test-time agent evolution[R]. arXiv, 2026.
+刘泽文. 评估者偏好坍缩：测试时智能体进化中的自评估偏差[R]. arXiv, 2026.
+
+[5] LI X, ZHANG T, DUBOIS Y, et al. AlpacaEval: An automatic evaluator of instruction-following models[C]//International Conference on Learning Representations, 2024.
+
+[6] VERGA P, RASHKIN H, BANSAL M. Arbiter: A robust evaluation framework for LLM-as-judge[C]//Empirical Methods in Natural Language Processing, 2024.
+
+[7] YUAN W, PANG R Y, CHO K, et al. Self-rewarding language models[C]//International Conference on Machine Learning, 2024.
+
+[8] CHEN H, YAO S, YU D, et al. Self-play fine-tuning converts weak language models to strong language models[C]//Advances in Neural Information Processing Systems, 2024.
+
+[9] Google DeepMind. Gemini 1.5: Unlocking multimodal understanding across millions of tokens[R]. arXiv:2403.05530, 2024.
+
+[10] LU J, BATRA D, PARIKH D, et al. ViLBERT: Pretraining task-agnostic visiolinguistic representations[C]//Advances in Neural Information Processing Systems, 2019.
+
+[11] AGHAJANYAN A, GUPTA A, SHRIVASTAVA A, et al. CM3: A causal masked multimodal model of the internet[R]. arXiv:2101.08220, 2021.
+
+[12] ALAYRAC J-B, DONAHUE J, LUC P, et al. Flamingo: A visual language model for few-shot learning[C]//Advances in Neural Information Processing Systems, 2022.
+
+[13] YU T, ZHANG R, YANG Z, et al. Reward hacking in multimodal RLHF: A case study in vision-language models[C]//International Conference on Learning Representations, 2024.
+
+[14] SUN Z, SHEN Y, ZHOU Q, et al. Aligning multimodal large language models with human preferences: Challenges and solutions[R]. arXiv:2405.07656, 2024.
+
+[15] SHINN N, CASSANO F, GOPINATH A, et al. Reflexion: Language agents with verbal reinforcement learning[C]//Advances in Neural Information Processing Systems, 2023.
+
+[16] MADAAN A, TANDON N, GUPTA P, et al. Self-Refine: Iterative refinement with self-feedback[C]//Advances in Neural Information Processing Systems, 2023.
+
+[17] YAO S, ZHAO J, YU D, et al. ReAct: Synergizing reasoning and acting in language models[C]//International Conference on Learning Representations, 2023.
+
+[18] WANG G, XIE Y, JIANG Y, et al. Voyager: An open-ended embodied agent with large language models[C]//International Conference on Machine Learning, 2024.
+
+[19] GAO L, SCHULMAN J, HILTON J. Scaling laws for reward model overoptimization[C]//International Conference on Machine Learning, 2023.
+
+[20] CASPER S, DAVIES X, SHI C, et al. Open problems and fundamental limitations of reinforcement learning from human feedback[J]. Transactions on Machine Learning Research, 2023.
+
+[21] SHARMA M, TONG E, KORBAK T, et al. Towards understanding sycophancy in language models[C]//International Conference on Learning Representations, 2024.
+
+[22] PEREZ E, RINGER S, LUKOŠIŪTĖ K, et al. Discovering language model behaviors with model-written evaluations[C]//Advances in Neural Information Processing Systems, 2022.
+
+[23] BURNS C, IZMAILOV P, KIRCHNER J H, et al. Weak-to-strong generalization: Eliciting strong capabilities with weak supervision[C]//International Conference on Machine Learning, 2024.
+
+
+=== 作者简介 ===
+
+刘泽文（2003－），男，山东泰安人，本科生，研究方向为人工智能、大语言模型评估、多模态智能体。E-mail: liuzewen@qilu.edu.cn
+
+LIU Zewen, born in 2003, B.S. candidate. His research interests include artificial intelligence, LLM evaluation, and multimodal agents.

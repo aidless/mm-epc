@@ -1,0 +1,91 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{zheng2023judging}
+\citation{chiang2024chatbot}
+\citation{openai2024gpt4o}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{liu2026epc}
+\citation{zheng2023judging}
+\citation{li2024alpacaeval}
+\citation{verga2024arbiter}
+\citation{yuan2024selfrewarding}
+\citation{chen2024selfplay}
+\citation{openai2024gpt4o}
+\citation{gemini2024gemini15}
+\citation{lu2022multimodal}
+\citation{aghajanyan2021cm3}
+\citation{alayrac2022flamingo}
+\citation{yu2024mmrlhf}
+\citation{sun2024aligning}
+\citation{shinn2023reflexion}
+\citation{madaan2023selfrefine}
+\citation{yao2023react}
+\citation{wang2024voyager}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Contributions}{2}{subsection.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Evaluator Preference Collapse and LLM-as-Judge}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Multimodal Evaluation and Safety}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Cross-Modal Transfer and Interference}{2}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Agent Self-Improvement and Strategy Optimization}{2}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{3}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Multimodal Preference Collapse Index (MPCI)}{3}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Cross-Modal Contagion}{3}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental Setup}{3}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results}{4}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Phase 1: Multimodal EPC Existence}{4}{subsection.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Multimodal EPC metrics. GPT-4o produces 3.2$\times $ the collapse of text-only self-evaluation.}}{4}{table.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces PCI comparison across evaluation conditions. GPT-4o cross-model (1.464) vs DeepSeek self-eval (0.461) vs Ground truth (0.251).}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:pci_comparison}{{1}{4}{PCI comparison across evaluation conditions. GPT-4o cross-model (1.464) vs DeepSeek self-eval (0.461) vs Ground truth (0.251)}{figure.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Strategy weight distribution. Visual-specific strategies nearly eliminated.}}{4}{table.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Strategy weight distribution. Visual strategies (orange) receive only 9.1\%, step\_by\_step dominates at 48.4\%.}}{5}{figure.2}\protected@file@percent }
+\newlabel{fig:strategy_weights}{{2}{5}{Strategy weight distribution. Visual strategies (orange) receive only 9.1\%, step\_by\_step dominates at 48.4\%}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Phase 2: Cross-Modal Contagion}{5}{subsection.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Contagion results. Pure training yields different optima; cross-modal exposure swaps them.}}{5}{table.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Strategy inversion before and after cross-modal contagion. Optimal strategies swap between modalities.}}{5}{figure.3}\protected@file@percent }
+\newlabel{fig:strategy_shift}{{3}{5}{Strategy inversion before and after cross-modal contagion. Optimal strategies swap between modalities}{figure.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Contagion coefficients.}}{6}{table.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Contagion matrix $\Gamma $. Visual-to-text (0.847) $>$ text-to-visual (0.832).}}{6}{figure.4}\protected@file@percent }
+\newlabel{fig:contagion_matrix}{{4}{6}{Contagion matrix $\Gamma $. Visual-to-text (0.847) $>$ text-to-visual (0.832)}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces PCI breakdown by modality. Visual tasks exhibit 8.6\% stronger collapse than text tasks.}}{6}{figure.5}\protected@file@percent }
+\newlabel{fig:modality_breakdown}{{5}{6}{PCI breakdown by modality. Visual tasks exhibit 8.6\% stronger collapse than text tasks}{figure.5}{}}
+\citation{openai2024gpt4o}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Statistical Validation}{7}{section.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Statistical Validation of Cross-Modal Asymmetric Contagion}}{7}{table.5}\protected@file@percent }
+\newlabel{tab:statistical}{{5}{7}{Statistical Validation of Cross-Modal Asymmetric Contagion}{table.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{7}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Why Does GPT-4o Produce 3.2$\times $ Stronger Collapse?}{7}{subsection.7.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces PCI breakdown by condition. GPT-4o cross-model evaluation (1.464) vs text-only self-evaluation (0.461) vs ground-truth verification (0.251).}}{8}{figure.6}\protected@file@percent }
+\newlabel{fig:pci_breakdown}{{6}{8}{PCI breakdown by condition. GPT-4o cross-model evaluation (1.464) vs text-only self-evaluation (0.461) vs ground-truth verification (0.251)}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Ablation: Contribution of Each Modality to MPCI}{8}{subsection.7.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces MPCI decomposition. Visual tasks contribute disproportionately to collapse.}}{8}{table.6}\protected@file@percent }
+\newlabel{tab:mpci_decomp}{{6}{8}{MPCI decomposition. Visual tasks contribute disproportionately to collapse}{table.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Implications for Multimodal Agent Systems}{8}{subsection.7.3}\protected@file@percent }
+\citation{zheng2023judging}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Error Analysis and Failure Modes}{9}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Limitations and Future Work}{9}{subsection.7.5}\protected@file@percent }
+\bibstyle{plain}
+\bibcite{liu2026epc}{1}
+\bibcite{openai2024gpt4o}{2}
+\bibcite{gemini2024gemini15}{3}
+\bibcite{zheng2023judging}{4}
+\bibcite{verga2024arbiter}{5}
+\bibcite{chiang2024chatbot}{6}
+\bibcite{li2024alpacaeval}{7}
+\bibcite{yuan2024selfrewarding}{8}
+\bibcite{chen2024selfplay}{9}
+\bibcite{lu2022multimodal}{10}
+\bibcite{aghajanyan2021cm3}{11}
+\bibcite{alayrac2022flamingo}{12}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Code and Data Availability}{10}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{10}{section.9}\protected@file@percent }
+\bibcite{yu2024mmrlhf}{13}
+\bibcite{sun2024aligning}{14}
+\bibcite{shinn2023reflexion}{15}
+\bibcite{madaan2023selfrefine}{16}
+\bibcite{yao2023react}{17}
+\bibcite{wang2024voyager}{18}
+\bibcite{deepseek2024v3}{19}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Experiment Reproducibility}{11}{appendix.A}\protected@file@percent }
+\gdef \@abspage@last{11}

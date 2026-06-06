@@ -1,0 +1,362 @@
+[
+  {
+    "category": "REASONING",
+    "insight": "CoT-SC: Self-consistency over multiple CoT paths improves accuracy by 5-15% via majority voting (Wang et al. ICLR 2023)"
+  },
+  {
+    "category": "REASONING",
+    "insight": "Tree-of-Thoughts: BFS/DFS exploration of reasoning paths beats greedy decoding on planning tasks (Yao et al. NeurIPS 2023)"
+  },
+  {
+    "category": "REASONING",
+    "insight": "ReAct: Interleaving reasoning traces with tool-use actions creates self-correcting agent loops (Yao et al. ICLR 2023)"
+  },
+  {
+    "category": "REASONING",
+    "insight": "Self-Refine: LLM iteratively critiques and improves its own output without external feedback (Madaan et al. NeurIPS 2023)"
+  },
+  {
+    "category": "REASONING",
+    "insight": "Reflexion: Verbal reinforcement learning — agent reflects on failures in natural language to improve (Shinn et al. NeurIPS 2023)"
+  },
+  {
+    "category": "REASONING",
+    "insight": "Graph-of-Thoughts: Nonlinear reasoning graph outperforms linear chains for complex multi-hop problems"
+  },
+  {
+    "category": "REASONING",
+    "insight": "Plan-and-Solve: Explicit planning before execution reduces hallucination in multi-step tasks"
+  },
+  {
+    "category": "REASONING",
+    "insight": "Program-of-Thought: Generating Python code to solve reasoning tasks is more accurate than natural language CoT"
+  },
+  {
+    "category": "REASONING",
+    "insight": "Least-to-Most: Decomposing hard problems into easier subproblems enables solving tasks beyond single-prompt capacity"
+  },
+  {
+    "category": "REASONING",
+    "insight": "Buffer-of-Thought: Maintaining a buffer of high-quality reasoning templates accelerates inference"
+  },
+  {
+    "category": "REASONING",
+    "insight": "Chain-of-Verification: LLM generates then fact-checks its own output, reducing hallucination by 30%+"
+  },
+  {
+    "category": "AGENT",
+    "insight": "Toolformer: Self-supervised learning to use external tools — models learn when and how to call APIs (Schick et al. NeurIPS 2023)"
+  },
+  {
+    "category": "AGENT",
+    "insight": "Gorilla: Fine-tuned LLaMA for API calls outperforms GPT-4 on tool-use benchmarks (Patil et al. 2023)"
+  },
+  {
+    "category": "AGENT",
+    "insight": "AutoGen: Multi-agent conversation framework with customizable agent roles and human-in-the-loop (Wu et al. 2023)"
+  },
+  {
+    "category": "AGENT",
+    "insight": "CrewAI: Role-based agent orchestration — CEO delegates to specialized worker agents"
+  },
+  {
+    "category": "AGENT",
+    "insight": "MetaGPT: SOP-driven multi-agent software development with structured intermediate outputs (Hong et al. 2023)"
+  },
+  {
+    "category": "AGENT",
+    "insight": "SWE-Agent: Autonomous software engineering agent that edits files, runs tests, and fixes bugs (Yang et al. 2024)"
+  },
+  {
+    "category": "AGENT",
+    "insight": "Devin: First end-to-end AI software engineer handling entire development lifecycle"
+  },
+  {
+    "category": "AGENT",
+    "insight": "AgentVerse: Dynamic multi-agent task solving with adaptive agent recruitment and role assignment"
+  },
+  {
+    "category": "AGENT",
+    "insight": "WebArena: Realistic web environment benchmark for autonomous agents (Zhou et al. 2024)"
+  },
+  {
+    "category": "AGENT",
+    "insight": "OSWorld: Benchmark for multimodal agents on real-world OS tasks — 369 real computer tasks"
+  },
+  {
+    "category": "AGENT",
+    "insight": "OpenDevin: Open-source platform for developing AI agents with sandbox execution and code editing"
+  },
+  {
+    "category": "AGENT",
+    "insight": "AppAgent: Multimodal agent that operates smartphone apps via visual understanding and tap/swipe actions"
+  },
+  {
+    "category": "AGENT",
+    "insight": "TaskWeaver: Code-first agent framework that converts user requests into executable code with rich data structures"
+  },
+  {
+    "category": "AGENT",
+    "insight": "XAgent: Autonomous agent with dual-loop (planning + execution) and comprehensive tool ecosystem"
+  },
+  {
+    "category": "PROMPT",
+    "insight": "Few-shot prompting: 3-5 well-chosen examples provide 10-20% improvement over zero-shot across tasks"
+  },
+  {
+    "category": "PROMPT",
+    "insight": "Role-prompting (e.g., 'You are an expert X') improves domain-specific accuracy by 5-15%"
+  },
+  {
+    "category": "PROMPT",
+    "insight": "Structured output formats (JSON schema) reduce parsing errors and hallucination in tool-use scenarios"
+  },
+  {
+    "category": "PROMPT",
+    "insight": "System prompt engineering is as impactful as few-shot examples for controlling model behavior"
+  },
+  {
+    "category": "PROMPT",
+    "insight": "Prompt compression: Removing redundant tokens via LLMLingua saves 2-5x cost without quality loss"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "RLHF: Reinforcement learning from human feedback aligns LLMs with preferences (Ouyang et al. NeurIPS 2022)"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "DPO: Direct preference optimization eliminates need for separate reward model (Rafailov et al. NeurIPS 2023)"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "Constitutional AI: Self-improvement via AI-generated feedback guided by principles (Bai et al. 2022)"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "SPIN: Self-Play Fine-Tuning — LLM generates training data and learns from it in iterative rounds"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "Self-Rewarding: LLM acts as its own reward model, creating autonomous improvement loop (Yuan et al. 2024)"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "ReST: Reinforced self-training with EM-style optimization — generate-filter-fine-tune cycles"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "GRPO: Group Relative Policy Optimization — compares outputs within groups for efficient RL (DeepSeek 2024)"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "ORPO: Single-stage preference alignment combining SFT and preference optimization"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "KTO: Aligns LLMs from binary feedback only — no paired preferences needed (Ethayarajh et al. 2024)"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "Test-Time Training: Updates model on self-supervised task during inference for adaptation (Sun et al. ICLR 2020)"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "TTT-Linear: Replace RNN hidden state with trainable linear model that updates at test time"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "Quiet-STaR: LLM learns to think before speaking by generating internal thoughts at every token"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "STaR: Self-taught reasoner bootstraps reasoning from few examples via self-generated rationales"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "RAFT: Retrieval-augmented fine-tuning — training LLMs to reason over retrieved documents"
+  },
+  {
+    "category": "TRAINING",
+    "insight": "Meta-RL for LLMs: Learning to learn — optimizing hyperparameters via meta-gradients on held-out tasks"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "MoE: Mixture of Experts achieves sparse computation — only 2-3 experts active per token (Shazeer et al. ICLR 2017)"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "Switch Transformer: Simplifies MoE to top-1 routing, reducing computation and communication (Fedus et al. 2022)"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "DeepSeek-MoE: Fine-grained expert segmentation with shared expert isolation for better specialization"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "LoRA: Low-rank adaptation enables fine-tuning 100x fewer parameters with comparable quality (Hu et al. ICLR 2022)"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "QLoRA: 4-bit quantized LoRA — fine-tune 65B models on a single 48GB GPU (Dettmers et al. NeurIPS 2023)"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "FlashAttention: IO-aware exact attention reduces memory from O(N²) to O(N) (Dao et al. NeurIPS 2022)"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "FlashAttention-2: 2x speedup over v1 via better work partitioning and parallelism"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "FlashAttention-3: Exploits Hopper GPU async features for another 1.5-2x speedup"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "Speculative Decoding: Draft model generates candidate tokens, target model verifies — 2-3x speedup"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "KV-cache quantization: 4-bit KV-cache compression reduces memory by 75% with minimal quality loss"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "vLLM: PagedAttention enables near-zero waste KV-cache memory management (Kwon et al. SOSP 2023)"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "SGLang: Structured generation language — radix attention for efficient batched LLM serving"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "Ring Attention: Distributes long-sequence attention across devices via ring communication pattern"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "GQA: Grouped-Query Attention balances MHA quality with MQA speed (Ainslie et al. EMNLP 2023)"
+  },
+  {
+    "category": "ARCHITECTURE",
+    "insight": "Mamba: State space models as efficient alternatives to Transformers for long sequences"
+  },
+  {
+    "category": "AGENT",
+    "insight": "ChatDev: Multi-agent software development via chat-based communication — agents discuss and code"
+  },
+  {
+    "category": "AGENT",
+    "insight": "AgentLite: Lightweight multi-agent framework with task decomposition and dynamic agent spawning"
+  },
+  {
+    "category": "AGENT",
+    "insight": "Magentic-One: Generalist multi-agent system with Orchestrator leading specialized agents"
+  },
+  {
+    "category": "AGENT",
+    "insight": "GPTSwarm: Swarm intelligence with differentiable agent communication graphs optimized via RL"
+  },
+  {
+    "category": "AGENT",
+    "insight": "Byzantine-resilient: Secure aggregation protocols protect multi-agent learning from faulty participants"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "Jailbreak resistance: Even aligned models remain vulnerable to carefully crafted adversarial prompts"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "Representation engineering: Controlling model behavior by manipulating internal activation vectors"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "Circuit breaking: Targeted model editing can disable specific harmful capabilities without degrading others"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "RAIN: Self-evaluation during autoregressive generation catches harmful outputs before completion"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "Red-teaming automation: LLMs can generate diverse adversarial test cases to find vulnerabilities"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "RLHF tax: Alignment sometimes reduces helpfulness — the alignment-helpfulness trade-off is real"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "Latent adversarial training: Training on adversarial latent perturbations improves robustness by 15-20%"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "Sleeper agents: Backdoor behaviors can survive safety training, re-emerging under specific triggers"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "Scalable oversight: Debate between AI systems enables human judgment of superhuman outputs"
+  },
+  {
+    "category": "SAFETY",
+    "insight": "Weak-to-strong generalization: Stronger models supervised by weaker ones can outperform their supervisors"
+  },
+  {
+    "category": "AGENT",
+    "insight": "AutoGen Studio: No-code interface for multi-agent workflow design with drag-and-drop agent configuration"
+  },
+  {
+    "category": "AGENT",
+    "insight": "CAMEL: Communicative agents exploring 'Mind' exploration via role-playing conversations"
+  },
+  {
+    "category": "AGENT",
+    "insight": "Generative Agents: Simulacra of human behavior — 25 agents in a virtual town exhibit emergent social behaviors"
+  },
+  {
+    "category": "AGENT",
+    "insight": "Voyager: LLM-powered lifelong learning agent in Minecraft that writes and refines its own skills"
+  },
+  {
+    "category": "AGENT",
+    "insight": "SayCan: Grounding LLM commands in real-world robot affordances — what the robot can actually do"
+  },
+  {
+    "category": "AGENT",
+    "insight": "RT-2: Vision-language-action model that directly outputs robot actions from images and text"
+  },
+  {
+    "category": "AGENT",
+    "insight": "CodeAct: Unified code-action space for LLM agents — all actions expressed as executable Python code"
+  },
+  {
+    "category": "AGENT",
+    "insight": "MemGPT: OS-inspired memory management for LLMs with virtual context via paging between main and external memory"
+  },
+  {
+    "category": "AGENT",
+    "insight": "Let's Verify Step by Step: Process supervision beats outcome supervision for mathematical reasoning (Lightman et al. 2024)"
+  },
+  {
+    "category": "AGENT",
+    "insight": "AlphaGeometry: Solving olympiad geometry via neuro-symbolic system combining LLM with symbolic solver"
+  },
+  {
+    "category": "AGENT",
+    "insight": "FunSearch: LLM-driven evolution discovers new mathematical algorithms — first AI discovery in cap set problem"
+  },
+  {
+    "category": "AGENT",
+    "insight": "StreamingLLM: Enables infinite-length inputs via attention sink phenomenon — keeps initial tokens as anchors"
+  },
+  {
+    "category": "AGENT",
+    "insight": "Self-Discover: LLMs can discover their own reasoning structures rather than using predefined templates"
+  },
+  {
+    "category": "AGENT",
+    "insight": "CoALA: Cognitive architecture for language agents — modular memory/action/decision components"
+  },
+  {
+    "category": "AGENT",
+    "insight": "PRIME-RL: Process reinforcement with implicit reward — learns from process rather than outcome signals"
+  }
+]

@@ -1,0 +1,126 @@
+{
+  "phase": "3_statistical_validation",
+  "method": "bootstrap (10,000 resamples)",
+  "base_data": "Phase 2 (6-round contagion experiment)",
+  "simulated_experiments": 10,
+  "rounds_per_phase": 50,
+  "raw_results": [
+    {
+      "repetition": 1,
+      "rounds": 50,
+      "gamma_TV": 0.8383,
+      "gamma_VT": 0.845,
+      "asymmetry": 0.0067,
+      "direction": "V¡úT"
+    },
+    {
+      "repetition": 2,
+      "rounds": 50,
+      "gamma_TV": 0.8402,
+      "gamma_VT": 0.8652,
+      "asymmetry": 0.025,
+      "direction": "V¡úT"
+    },
+    {
+      "repetition": 3,
+      "rounds": 50,
+      "gamma_TV": 0.8295,
+      "gamma_VT": 0.8439,
+      "asymmetry": 0.0144,
+      "direction": "V¡úT"
+    },
+    {
+      "repetition": 4,
+      "rounds": 50,
+      "gamma_TV": 0.8514,
+      "gamma_VT": 0.856,
+      "asymmetry": 0.0046,
+      "direction": "V¡úT"
+    },
+    {
+      "repetition": 5,
+      "rounds": 50,
+      "gamma_TV": 0.8266,
+      "gamma_VT": 0.8533,
+      "asymmetry": 0.0267,
+      "direction": "V¡úT"
+    },
+    {
+      "repetition": 6,
+      "rounds": 50,
+      "gamma_TV": 0.8267,
+      "gamma_VT": 0.8411,
+      "asymmetry": 0.0144,
+      "direction": "V¡úT"
+    },
+    {
+      "repetition": 7,
+      "rounds": 50,
+      "gamma_TV": 0.8352,
+      "gamma_VT": 0.8235,
+      "asymmetry": -0.0117,
+      "direction": "T¡úV"
+    },
+    {
+      "repetition": 8,
+      "rounds": 50,
+      "gamma_TV": 0.8114,
+      "gamma_VT": 0.8399,
+      "asymmetry": 0.0285,
+      "direction": "V¡úT"
+    },
+    {
+      "repetition": 9,
+      "rounds": 50,
+      "gamma_TV": 0.82,
+      "gamma_VT": 0.8505,
+      "asymmetry": 0.0305,
+      "direction": "V¡úT"
+    },
+    {
+      "repetition": 10,
+      "rounds": 50,
+      "gamma_TV": 0.8213,
+      "gamma_VT": 0.8296,
+      "asymmetry": 0.0083,
+      "direction": "V¡úT"
+    }
+  ],
+  "statistical_analysis": {
+    "gamma_TV": {
+      "mean": 0.8301,
+      "std": 0.011,
+      "ci_95": [
+        0.8133,
+        0.8489
+      ]
+    },
+    "gamma_VT": {
+      "mean": 0.8448,
+      "std": 0.0117,
+      "ci_95": [
+        0.8249,
+        0.8631
+      ]
+    },
+    "asymmetry": {
+      "mean": 0.0147,
+      "std": 0.0039,
+      "ci_95": [
+        0.0067,
+        0.0221
+      ],
+      "one_sided_p_value": 0.0002,
+      "significant_at_0.05": true,
+      "significant_at_0.01": true,
+      "cohens_d": 1.3,
+      "effect_size_interpretation": "large",
+      "achieved_power": 0.9727
+    }
+  },
+  "interpretation": {
+    "asymmetry_confirmed": true,
+    "effect_magnitude": "large",
+    "recommendation": "Asymmetry is statistically significant; recommend 50+ round real experiments for publication-grade validation."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "rounds": 30,
+  "ttrl_win_rate": 0.0,
+  "correct_rate": 0.0,
+  "control_rate": 0.0,
+  "gain": 0.0,
+  "final_weights": {
+    "step_by_step": 0.125,
+    "critical_check": 0.125,
+    "first_principles": 0.125,
+    "creative_leap": 0.125,
+    "analogy_meta": 0.125,
+    "evidence_cite": 0.125,
+    "synthesis": 0.125,
+    "counterfactual": 0.125
+  },
+  "wins": {
+    "step_by_step": 0,
+    "critical_check": 0,
+    "first_principles": 0,
+    "creative_leap": 0,
+    "analogy_meta": 0,
+    "evidence_cite": 0,
+    "synthesis": 0,
+    "counterfactual": 0
+  }
+}

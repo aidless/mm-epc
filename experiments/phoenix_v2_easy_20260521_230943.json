@@ -1,0 +1,19 @@
+{
+  "benchmark": "easy",
+  "num_tasks": 5,
+  "avg_score": 0.5,
+  "success_rate": 0.0,
+  "TTRL_improvement": 0.0,
+  "total_time": 139.3,
+  "total_adaptations": 15,
+  "final_strategy_weights": {
+    "step_by_step": 0.2,
+    "first_principles": 0.2,
+    "analogy": 0.15,
+    "critical_check": 0.15,
+    "creative_leap": 0.15,
+    "conservative": 0.15
+  },
+  "memory_size": 15,
+  "swarm_robustness": 1.0
+}

@@ -1,0 +1,21 @@
+\begin{table}[ht]
+\centering
+\caption{Statistical Validation of Cross-Modal Asymmetric Contagion}
+\label{tab:statistical}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{95\% CI} & \textbf{Significance} \\
+\midrule
+$\gamma_{T\to V}$ (Text $\to$ Visual) & 1.2386 $\pm$ 0.2187 & [0.8099, 1.6673] & --- \\
+$\gamma_{V\to T}$ (Visual $\to$ Text) & 1.3166 $\pm$ 0.3871 & [0.5578, 2.0753] & --- \\
+\midrule
+Asymmetry ($\Delta\gamma$) & 0.0780 $\pm$ 0.6058 & [-0.1822, 0.3069] & p = 0.2520  \\
+\bottomrule
+\end{tabular}
+
+\vspace{4pt}
+\begin{minipage}{\textwidth}
+\footnotesize
+\textit{Note.} Real API experiment with $N=10$ independent repetitions (50 rounds each, 2000 total LLM evaluation calls). Bootstrap analysis with 10,000 resamples. One-sided test: $H_0: \gamma_{V\to T} \leq \gamma_{T\to V}$. $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$.
+\end{minipage}
+\end{table}

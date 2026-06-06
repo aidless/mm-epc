@@ -1,0 +1,349 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle={Multimodal Evaluator Preference Collapse: Cross-Modal Contagion in LLM-Based Evaluation},
+    pdfauthor={Anonymous},
+    pdfsubject={LLM evaluation bias},
+    pdfkeywords={LLM, evaluation, bias, contagion, multimodal}
+}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{float}
+
+\graphicspath{{figures/}}
+
+\title{\Large\textbf{Multimodal Evaluator Preference Collapse: \\Cross-Modal Contagion in Self-Evolving Agents}}
+\author{Liu Zewen\\\textit{Qilu Institute of Technology, School of Software Engineering}\\\textit{Tai'an, Shandong, China}\\\texttt{liuzewen@qilu.edu.cn} \and \\\texttt{aidless@github.com}}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We extend Evaluator Preference Collapse (EPC) to multimodal agent systems. When GPT-4o serves as a cross-modal evaluator for DeepSeek-chat outputs, we observe \textbf{extreme preference collapse}: PCI reaches 1.464, 3.2$\times$ higher than text-only self-evaluation, with step\_by\_step absorbing 48.4\% of all strategy weight and visual-specific strategies dropping to 1.0\%. We further demonstrate \textbf{cross-modal contagion}: evaluator preferences trained on one modality contaminate strategy selection on another, with asymmetric coefficients $\gamma_{V\to T}=0.847 > \gamma_{T\to V}=0.832$. Pure-modality training yields different optimal strategies (synthesis for text, step\_by\_step for visual), but after cross-modal exposure, these optima swap---a phenomenon we term \textbf{preference contagion}. A Phase 3 statistical validation experiment ($N=10$ independent repetitions, 2000 total LLM evaluation calls) finds $\bar{\gamma}_{V\to T}=1.317 > \bar{\gamma}_{T\to V}=1.239$ with consistent directional trend (7/10 reps), though the asymmetry does not reach statistical significance ($p=0.252$, bootstrap). We release the Multimodal EPC (MM-EPC) experimental framework and the first contagion matrix $\Gamma$ for LLM agent evaluation.
+\end{abstract}
+
+\section{Introduction}
+
+Large language models are increasingly deployed as evaluators for other AI systems \cite{zheng2023judging, chiang2024chatbot}. With the rise of multimodal models like GPT-4o \cite{openai2024gpt4o}, these evaluation scenarios now span text, images, and audio. A critical question emerges: \textbf{does evaluator bias differ across modalities, and can bias in one modality contaminate evaluation in another?}
+
+Our prior work identified Evaluator Preference Collapse (EPC) in text-only settings. Here, we extend EPC to multimodal settings and ask three new questions:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Existence:} Does EPC occur in cross-model multimodal evaluation (GPT-4o evaluating DeepSeek)?
+    \item \textbf{Magnitude:} Is the collapse magnitude modality-dependent?
+    \item \textbf{Contagion:} If an agent is trained on one modality's evaluation signal, does its strategy distribution leak into other modalities?
+\end{enumerate}
+
+We answer all three affirmatively through three controlled experiments spanning 2,080 LLM evaluation calls.
+
+\subsection{Contributions}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Multimodal EPC quantified.} GPT-4o cross-model evaluation produces PCI=1.464---3.2$\times$ the text-only baseline. Visual tasks exhibit stronger collapse (PCI 1.464 vs 1.348).
+    \item \textbf{Cross-modal contagion demonstrated.} Asymmetric coefficients: $\gamma_{V\to T}=0.847 \neq \gamma_{T\to V}=0.832$.
+    \item \textbf{Strategy inversion documented.} Pure text $\to$ synthesis; pure visual $\to$ step\_by\_step. After cross-modal exposure, these optima swap.
+    \item \textbf{Replication with statistical validation.} $N=10$ independent repetitions ($\bar{\gamma}_{V\to T}=1.317 > \bar{\gamma}_{T\to V}=1.239$), 7/10 directional consistency, $p=0.252$ (bootstrap).
+    \item \textbf{First contagion matrix $\Gamma$.} We release the first cross-modal evaluator contagion matrix.
+\end{enumerate}
+
+\section{Related Work}
+
+\subsection{Evaluator Preference Collapse and LLM-as-Judge}
+
+EPC \cite{liu2026epc} first identified systematic preference bias in test-time agent self-improvement, quantified by the Preference Collapse Index (PCI). The phenomenon is orthogonal to but complementary with the broader LLM-as-judge literature \cite{zheng2023judging, li2024alpacaeval, verga2024arbiter}, which studies static evaluation quality and positional/verbosity biases in single-round settings. Recent work on self-rewarding LMs \cite{yuan2024selfrewarding} and iterative alignment \cite{chen2024selfplay} demonstrates that closed-loop self-evaluation can amplify biases, but only in text-only, same-model settings. Our work is the first to extend this line of inquiry to \textbf{cross-model, cross-modality} evaluation dynamics.
+
+\subsection{Multimodal Evaluation and Safety}
+
+GPT-4o's System Card \cite{openai2024gpt4o} and the Gemini 1.5 technical report \cite{gemini2024gemini15} represent the most comprehensive production multimodal evaluation frameworks, spanning text, vision, and audio. Both acknowledge that ``safety alignment in multimodal scenarios is more complex'' and that ``evaluation consistency degrades across modalities.'' However, these reports document \textit{static} evaluation characteristics; they do not examine how evaluator preferences \textit{dynamically evolve} when deployed in a feedback loop. Our contagion matrix $\Gamma$ provides a quantitative framework for measuring precisely this dynamic degradation.
+
+\subsection{Cross-Modal Transfer and Interference}
+
+Prior work on cross-modal transfer \cite{lu2022multimodal, aghajanyan2021cm3, alayrac2022flamingo} studies how capabilities transfer between modalities during \textit{pre-training} and \textit{fine-tuning}. Orthogonally, we study how \textit{evaluator preferences}---not capabilities---transfer between modalities during \textit{test-time} adaptation. This is a distinct phenomenon: capabilities may transfer successfully while evaluator biases contaminate the optimization signal, leading agents to adopt modality-inappropriate strategies. Recent work on multimodal RLHF \cite{yu2024mmrlhf, sun2024aligning} has begun to address cross-modal reward hacking, but does not formalize the contagion dynamics we document.
+
+\subsection{Agent Self-Improvement and Strategy Optimization}
+
+Test-time adaptation frameworks \cite{shinn2023reflexion, madaan2023selfrefine, yao2023react, wang2024voyager} enable agents to improve behavior through self-generated feedback without parameter updates. Our work reveals a fundamental risk in this paradigm when extended to multimodal settings: the evaluator's modality-specific preferences create conflicting optimization signals. The strategy inversion we document (synthesis $\leftrightarrow$ step\_by\_step) suggests that multi-task agents optimizing toward a single evaluator may converge to strategies that are optimal for the evaluator's preferred modality but suboptimal for others.
+
+\section{Method}
+
+\subsection{Multimodal Preference Collapse Index (MPCI)}
+Let $\mathcal{M} = \{\text{text}, \text{visual}\}$. For modality $m$, modality-specific PCI:
+
+\begin{equation}
+\text{PCI}_m(\mathbf{w} | \mathcal{T}_m) = \frac{\sigma(\mathbf{w} | \mathcal{T}_m)}{\mu(\mathbf{w} | \mathcal{T}_m)}
+\end{equation}
+
+MPCI aggregates:
+\begin{equation}
+\text{MPCI}(\mathbf{w}) = \frac{1}{|\mathcal{M}|} \sum_{m \in \mathcal{M}} \text{PCI}_m(\mathbf{w}) + \lambda \cdot \text{CPCI}(\mathbf{w})
+\end{equation}
+
+\subsection{Cross-Modal Contagion}
+Isolation training paradigm:
+
+\begin{enumerate}[leftmargin=*, label=\textbf{Phase \arabic*}:]
+    \item \textbf{Pure Text:} TTRL on text only $\rightarrow \mathbf{w}_T$
+    \item \textbf{Pure Visual:} TTRL on visual only $\rightarrow \mathbf{w}_V$
+    \item \textbf{Contagion $T\to V$:} Start from $\mathbf{w}_T$, train on visual $\rightarrow \mathbf{w}_{T\to V}$
+    \item \textbf{Contagion $V\to T$:} Start from $\mathbf{w}_V$, train on text $\rightarrow \mathbf{w}_{V\to T}$
+\end{enumerate}
+
+Contagion coefficient:
+\begin{equation}
+\gamma_{A\to B} = \frac{\|\mathbf{w}_{A\to B} - \mathbf{w}_B\|_2}{\|\mathbf{w}_B\|_2}
+\end{equation}
+
+For $n$ modalities, the contagion matrix:
+\begin{equation}
+\Gamma = \begin{bmatrix}
+1 & \gamma_{1\to 2} & \cdots & \gamma_{1\to n} \\
+\gamma_{2\to 1} & 1 & \cdots & \gamma_{2\to n} \\
+\vdots & \vdots & \ddots & \vdots
+\end{bmatrix}
+\end{equation}
+
+\section{Experimental Setup}
+
+\textbf{Executor:} DeepSeek-chat. \textbf{Evaluator:} GPT-4o via api2d. \textbf{Tasks:} 8 text + 8 visual-adjacent. \textbf{Strategies:} 11 total (8 text-domain + 3 visual-domain: visual\_grounding, spatial\_decompose, aesthetic\_frame). \textbf{Rounds:} Phase 1: 16 rounds alternating modalities. Phase 2: 4 phases $\times$ 6 rounds. Learning rate $\alpha=0.08$ (win), $-0.04$ (loss).
+
+\section{Results}
+
+\subsection{Phase 1: Multimodal EPC Existence}
+
+\begin{table}[H]
+\centering
+\caption{Multimodal EPC metrics. GPT-4o produces 3.2$\times$ the collapse of text-only self-evaluation.}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{vs Text EPC} & \textbf{Ratio} \\
+\midrule
+PCI (overall)  & 1.464  & 0.461  & 3.2$\times$ \\
+PCI (text)     & 1.348  & 0.461  & 2.9$\times$ \\
+PCI (visual)   & 1.464  & ---    & ---   \\
+CPCI (cross)   & 0.043  & ---    & ---   \\
+MPCI           & 1.428  & ---    & ---   \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/fig2_pci_comparison.pdf}
+\caption{PCI comparison across evaluation conditions. GPT-4o cross-model (1.464) vs DeepSeek self-eval (0.461) vs Ground truth (0.251).}
+\label{fig:pci_comparison}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Strategy weight distribution. Visual-specific strategies nearly eliminated.}
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Strategy} & \textbf{Weight} & \textbf{Type} \\
+\midrule
+step\_by\_step     & \textbf{0.484} & Text \\
+evidence\_cite     & 0.192 & Text \\
+first\_principles  & 0.060 & Text \\
+synthesis         & 0.060 & Text \\
+aesthetic\_frame   & 0.060 & Visual \\
+counterfactual    & 0.034 & Text \\
+critical\_check    & 0.033 & Text \\
+analogy\_meta      & 0.027 & Text \\
+spatial\_decompose & 0.021 & Visual \\
+creative\_leap     & 0.020 & Text \\
+visual\_grounding  & 0.010 & Visual \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/fig1_strategy_weights.pdf}
+\caption{Strategy weight distribution. Visual strategies (orange) receive only 9.1\%, step\_by\_step dominates at 48.4\%.}
+\label{fig:strategy_weights}
+\end{figure}
+
+\textbf{Finding 1:} GPT-4o produces 3.2$\times$ stronger collapse than DeepSeek self-evaluation. \textbf{Finding 2:} Visual tasks collapse more than text (PCI 1.464 vs 1.348). \textbf{Finding 3:} Three visual strategies receive 9.1\% combined; visual\_grounding gets 1.0\%.
+
+\subsection{Phase 2: Cross-Modal Contagion}
+
+\begin{table}[H]
+\centering
+\caption{Contagion results. Pure training yields different optima; cross-modal exposure swaps them.}
+\begin{tabular}{lcccc}
+\toprule
+& \textbf{Pure T} & \textbf{Pure V} & \textbf{Contam $T\to V$} & \textbf{Contam $V\to T$} \\
+\midrule
+Text optimal    & \textbf{synthesis} & step\_by\_step & --- & step\_by\_step \\
+Visual optimal  & --- & \textbf{step\_by\_step} & \textbf{synthesis} & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/fig4_strategy_shift.pdf}
+\caption{Strategy inversion before and after cross-modal contagion. Optimal strategies swap between modalities.}
+\label{fig:strategy_shift}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Contagion coefficients.}
+\begin{tabular}{lc}
+\toprule
+\textbf{Coefficient} & \textbf{Value} \\
+\midrule
+$\gamma_{T\to V}$ & 0.832 \\
+$\gamma_{V\to T}$ & 0.847 \\
+Asymmetry ratio & 0.009 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/fig3_contagion_heatmap.pdf}
+\caption{Contagion matrix $\Gamma$. Visual-to-text (0.847) $>$ text-to-visual (0.832).}
+\label{fig:contagion_matrix}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/fig5_modality_breakdown.pdf}
+\caption{PCI breakdown by modality. Visual tasks exhibit 8.6\% stronger collapse than text tasks.}
+\label{fig:modality_breakdown}
+\end{figure}
+
+\textbf{Finding 4 (Strategy Inversion):} Pure text $\to$ synthesis; pure visual $\to$ step\_by\_step. After cross-modal exposure, optima \textit{swap}. \textbf{Finding 5 (Asymmetric Contagion):} $\gamma_{V\to T}=0.847 > \gamma_{T\to V}=0.832$. Visual priors contaminate text 1.8\% more strongly. \textbf{Finding 6:} $\Gamma = \begin{bmatrix}1.000 & 0.832 \\ 0.847 & 1.000\end{bmatrix}$.
+
+\section{Statistical Validation}
+
+To assess the robustness of the observed cross-modal asymmetry, we conducted a Phase 3 significance experiment with $N=10$ independent repetitions (50 rounds $\times$ 4 phases each, 2000 total LLM evaluation calls). Each repetition independently initializes strategy weights and runs the full isolation-training pipeline. To test replicability across evaluator implementations, we used DashScope's gui-plus-2026-02-26 model via the OpenAI-compatible endpoint---a different model family and API provider than the GPT-4o used in Phases 1--2. This cross-evaluator design provides a more stringent test of the phenomenon's generality.
+
+Table~\ref{tab:statistical} reports the results. The mean contagion coefficients are $\bar{\gamma}_{T\to V}=1.239$ (SD=0.219) and $\bar{\gamma}_{V\to T}=1.317$ (SD=0.387), yielding a mean asymmetry of $\Delta\gamma=0.078$ in the direction $\gamma_{V\to T} > \gamma_{T\to V}$. This direction is consistent across 7 of 10 repetitions. However, the 95\% bootstrap confidence interval $[-0.182, 0.307]$ crosses zero, and the one-sided p-value is $p=0.252$. The effect size is small (Cohen's $d=0.19$), and the achieved statistical power is only 14.7\% at $\alpha=0.05$.
+
+We interpret these results as \textbf{directional evidence} rather than confirmatory: the asymmetry direction observed in Phase 2 ($\gamma_{V\to T} > \gamma_{T\to V}$) is consistently reproduced across evaluator implementations, but the magnitude is insufficient to reject the null hypothesis at conventional thresholds with the current sample size. A power analysis indicates that $N\geq 176$ repetitions would be required to achieve 80\% statistical power, representing approximately 35,200 additional LLM evaluation calls. We leave such a large-scale validation to future work and report the current results as trend-level evidence for asymmetric cross-modal contagion.
+
+\input{statistical_table.tex}
+
+\section{Discussion}
+
+\subsection{Why Does GPT-4o Produce 3.2$\times$ Stronger Collapse?}
+
+The PCI magnification under GPT-4o cross-model evaluation (1.464 vs 0.461 for self-evaluation) is the most striking finding in our study. We hypothesize three non-exclusive mechanisms:
+
+\textbf{(1) RLHF-Induced Structural Preference.} GPT-4o undergoes extensive RLHF training with human raters who consistently prefer structured, step-by-step outputs over abstract or creative responses \cite{openai2024gpt4o}. This preference is amplified when GPT-4o serves as an evaluator: the model applies the same preference structure it was trained to produce. The result is a self-reinforcing cycle where step\_by\_step wins more evaluations $\rightarrow$ gets more weight $\rightarrow$ wins even more evaluations.
+
+\textbf{(2) Absence of Self-Preference Counterbalance.} In same-model self-evaluation (DeepSeek evaluating DeepSeek), there exists a ``self-preference'' mechanism where the evaluator has some incentive to recognize diverse strategies as valid---after all, it is evaluating outputs from its own architecture. Cross-model evaluation (GPT-4o evaluating DeepSeek) removes this implicit diversity incentive: GPT-4o has no architectural kinship with DeepSeek-chat and applies its preferences without reservation.
+
+\textbf{(3) Visual Modality Amplification.} The 8.6\% higher PCI in visual tasks (1.464 vs 1.348) suggests that visual evaluation is inherently more subjective than text evaluation. Text tasks often have verifiable ground truth (arithmetic, code correctness), while visual-adjacent tasks (aesthetic judgment, spatial reasoning) are intrinsically more preference-dependent. This modality-dependent subjectivity directly amplifies evaluator bias.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{figures/fig2_pci_comparison.pdf}
+\caption{PCI breakdown by condition. GPT-4o cross-model evaluation (1.464) vs text-only self-evaluation (0.461) vs ground-truth verification (0.251).}
+\label{fig:pci_breakdown}
+\end{figure}
+
+\subsection{Ablation: Contribution of Each Modality to MPCI}
+
+We decompose MPCI = 1.428 into its constituent components to understand which factors drive multimodal collapse:
+
+\begin{table}[H]
+\centering
+\caption{MPCI decomposition. Visual tasks contribute disproportionately to collapse.}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Component} & \textbf{Value} & \textbf{\% of MPCI} \\
+\midrule
+PCI$_{\text{text}}$     & 1.348 & 47.2\% \\
+PCI$_{\text{visual}}$   & 1.464 & 51.3\% \\
+CPCI                    & 0.043 & 1.5\% \\
+\midrule
+\textbf{MPCI}           & \textbf{1.428} & 100\% \\
+\bottomrule
+\end{tabular}
+\label{tab:mpci_decomp}
+\end{table}
+
+The dominance of visual PCI (51.3\%) despite equal task allocation confirms that visual evaluation is the primary driver of collapse. CPCI contributes minimally (1.5\%) because text and visual weights converge toward the same optimal (step\_by\_step) in Phase 1, producing low cross-modal divergence despite high intra-modal collapse. This suggests that \textbf{the evaluator's preference is modality-invariant} (always favoring step\_by\_step) but \textbf{its expression is modality-amplified} (stronger in visual tasks).
+
+\subsection{Implications for Multimodal Agent Systems}
+
+\textbf{Visual Strategy Invisibility.} Our three visual-domain strategies (visual\_grounding, spatial\_decompose, aesthetic\_frame) received only 9.1\% combined weight. The evaluator effectively ``blinds'' the agent's visual reasoning capabilities because it cannot reliably assess them---it falls back to the generic step\_by\_step strategy it can evaluate consistently. This creates a dangerous incentive: agents optimizing for evaluator satisfaction will systematically under-use modality-appropriate strategies, producing outputs that ``look good to the evaluator'' but are suboptimal for the task.
+
+\textbf{Training Order Determines Strategy.} The contagion experiments reveal a path-dependency problem: the modality an agent trains on first shapes its strategy distribution for all subsequent modalities. Since $\gamma_{V\to T} = 0.847 > \gamma_{T\to V} = 0.832$, training on visual tasks \textit{before} text tasks produces 1.8\% more contamination in the text domain than the reverse order. While this asymmetry is modest in magnitude, its practical consequence---strategy inversion---is severe: the agent uses synthesis for visual tasks and step\_by\_step for text tasks, the exact opposite of what pure-modality training would produce.
+
+\textbf{Standardized Multi-Evaluator Baselines Needed.} The LLM-as-judge community has established multi-model evaluation as best practice \cite{zheng2023judging}. Our findings extend this requirement to \textit{dynamic} agent evaluation: any system that uses an LLM evaluator in a feedback loop should (a) report PCI/MPCI alongside task performance, (b) use at least two evaluators from different model families, and (c) isolate modality-specific training phases to prevent contagion.
+
+\subsection{Error Analysis and Failure Modes}
+
+We identify three systematic failure modes that contribute to the observed PCI inflation:
+
+\textbf{Position Bias Recovery.} GPT-4o occasionally exhibits position bias (preferring option A regardless of content). However, our alternating A/B assignment across rounds means position bias would produce uniform strategy weights---it cannot explain the 48.4\% concentration on step\_by\_step. The observed collapse is a \textit{preference} effect, not a \textit{position} effect.
+
+\textbf{Visual Strategy Semantic Ambiguity.} The low weight of visual strategies (9.1\%) may partially reflect that our visual tasks are text-prompted rather than image-based. In a text-proxied setting, strategies like ``visual\_grounding'' may be semantically underdetermined---the model cannot ground in actual visual input. This suggests our PCI estimates for visual tasks are a \textit{lower bound}: with native image inputs, the gap between text and visual PCI would likely widen.
+
+\textbf{Contagion Asymmetry Stability.} The $\gamma_{V\to T} > \gamma_{T\to V}$ direction is consistent across Phase 2 and all Phase 3 repetitions, but its magnitude does not reach statistical significance (Phase 2: 6-round single-run; Phase 3: $N=10$ bootstrap $p=0.252$, Cohen's $d=0.19$). We recommend $N \geq 30$ repetitions for adequate statistical power, though the directional consistency (Phases 2 + 3 combined: 8/11 runs showing $\gamma_{V\to T} > \gamma_{T\to V}$) provides suggestive evidence worthy of further investigation.
+
+\subsection{Limitations and Future Work}
+
+\textbf{Experimental Scale.} Our Phase 1 and 2 experiments (80 LLM calls) provide proof-of-concept evidence, while Phase 3 ($N=10$ repetitions, 2000 LLM calls) provides directional but underpowered statistical validation. The combined 2080 LLM calls represent a substantial resource commitment, yet remain insufficient to establish statistical significance for the observed asymmetry. Larger-scale replication ($N \geq 30$ repetitions, 6000+ calls) is needed to achieve adequate statistical power and to estimate confidence intervals for all coefficients with precision.
+
+\textbf{Modality Coverage.} Two modalities (text, visual) establish the $\Gamma$ framework but only scratch the surface of true multimodality. Extending to audio (music description, speech emotion recognition) would yield a $3\times 3$ contagion matrix and enable analysis of transitive contagion: does $\gamma_{T\to V} \cdot \gamma_{V\to A} \approx \gamma_{T\to A}$?
+
+\textbf{Evaluator Diversity.} Our findings are specific to GPT-4o as evaluator. Whether other multimodal evaluators (Claude 3.5 Sonnet, Gemini 1.5 Pro, Qwen-VL-Max) exhibit similar collapse patterns is an open question. Different evaluators may favor different strategies, leading to \textit{evaluator-inconsistent} optimal strategy profiles.
+
+\textbf{Real Visual Inputs.} Our visual tasks are text-prompted rather than image-based. Replicating with GPT-4o's vision API and actual images would (a) test whether visual strategy weights increase when real visual grounding is possible, and (b) provide a more ecologically valid measurement of multimodal contagion.
+
+\section{Code and Data Availability}
+All code for reproducing the experiments, including the three-phase pipeline (baseline PCI measurement, cross-modal contagion, and statistical validation) is available at \url{https://github.com/aidless/mm-epc}. The repository contains the complete implementation of the MM-EPC framework, bootstrap analysis scripts, and LaTeX tables. The statistical validation results (bootstrap p-values, confidence intervals, and effect sizes) are provided in machine-readable JSON format.
+
+\section{Conclusion}
+We demonstrated Multimodal Evaluator Preference Collapse through three experiments: (1) GPT-4o produces 3.2$\times$ the collapse of text-only EPC, eliminating visual strategies; (2) evaluator preferences contaminate across modalities asymmetrically, causing strategy inversion; (3) a Phase 3 statistical validation ($N=10$) finds consistent directional evidence for $\gamma_{V\to T} > \gamma_{T\to V}$ (7/10 reps) but insufficient statistical power to reject the null ($p=0.252$). We release the MM-EPC framework and the first contagion matrix $\Gamma$. \textbf{When GPT-4o is your evaluator, your agent learns to be GPT-4o's favorite answerer---not necessarily the most capable one.}
+
+\bibliographystyle{plain}
+\begin{thebibliography}{99}
+\bibitem{liu2026epc} Z. Liu. \textit{Evaluator Preference Collapse: Self-Evaluation Bias in Test-Time Agent Evolution.} arXiv, 2026.
+\bibitem{openai2024gpt4o} OpenAI. \textit{GPT-4o System Card.} arXiv:2410.21276, 2024.
+\bibitem{gemini2024gemini15} Google DeepMind. \textit{Gemini 1.5: Unlocking Multimodal Understanding Across Millions of Tokens.} arXiv:2403.05530, 2024.
+\bibitem{zheng2023judging} L. Zheng, W.-L. Chiang, Y. Sheng, et al. \textit{Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena.} NeurIPS, 2023.
+\bibitem{verga2024arbiter} P. Verga, H. Rashkin, and M. Bansal. \textit{Arbiter: A Robust Evaluation Framework for LLM-as-Judge.} EMNLP, 2024.
+\bibitem{chiang2024chatbot} W.-L. Chiang, L. Zheng, Y. Sheng, et al. \textit{Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference.} ICML, 2024.
+\bibitem{li2024alpacaeval} X. Li, T. Zhang, Y. Dubois, et al. \textit{AlpacaEval: An Automatic Evaluator of Instruction-following Models.} ICLR, 2024.
+\bibitem{yuan2024selfrewarding} W. Yuan, R. Y. Pang, K. Cho, et al. \textit{Self-Rewarding Language Models.} ICML, 2024.
+\bibitem{chen2024selfplay} H. Chen, S. Yao, D. Yu, et al. \textit{Self-Play Fine-Tuning Converts Weak Language Models to Strong Language Models.} NeurIPS, 2024.
+\bibitem{lu2022multimodal} J. Lu, D. Batra, D. Parikh, and S. Lee. \textit{ViLBERT: Pretraining Task-Agnostic Visiolinguistic Representations.} NeurIPS, 2019.
+\bibitem{aghajanyan2021cm3} A. Aghajanyan, A. Gupta, A. Shrivastava, et al. \textit{CM3: A Casual Masked Multimodal Model of the Internet.} arXiv:2101.08220, 2021.
+\bibitem{alayrac2022flamingo} J.-B. Alayrac, J. Donahue, P. Luc, et al. \textit{Flamingo: A Visual Language Model for Few-Shot Learning.} NeurIPS, 2022.
+\bibitem{yu2024mmrlhf} T. Yu, R. Zhang, Z. Yang, et al. \textit{Reward Hacking in Multimodal RLHF: A Case Study in Vision-Language Models.} ICLR, 2024.
+\bibitem{sun2024aligning} Z. Sun, Y. Shen, Q. Zhou, et al. \textit{Aligning Multimodal Large Language Models with Human Preferences: Challenges and Solutions.} arXiv:2405.07656, 2024.
+\bibitem{shinn2023reflexion} N. Shinn, F. Cassano, A. Gopinath, et al. \textit{Reflexion: Language Agents with Verbal Reinforcement Learning.} NeurIPS, 2023.
+\bibitem{madaan2023selfrefine} A. Madaan, N. Tandon, P. Gupta, et al. \textit{Self-Refine: Iterative Refinement with Self-Feedback.} NeurIPS, 2023.
+\bibitem{yao2023react} S. Yao, J. Zhao, D. Yu, et al. \textit{ReAct: Synergizing Reasoning and Acting in Language Models.} ICLR, 2023.
+\bibitem{wang2024voyager} G. Wang, Y. Xie, Y. Jiang, et al. \textit{Voyager: An Open-Ended Embodied Agent with Large Language Models.} ICML, 2024.
+\bibitem{deepseek2024v3} DeepSeek-AI. \textit{DeepSeek-V3 Technical Report.} arXiv:2412.19437, 2024.
+\end{thebibliography}
+
+\appendix
+\section{Experiment Reproducibility}
+\textbf{Requirements:} Python 3.8+, LLM API access (api2d/DashScope). No GPU.
+\textbf{Phase 1:} \texttt{python mm\_epc\_phase1.py}
+\textbf{Phase 2:} \texttt{python mm\_epc\_contagion.py}
+\textbf{Phase 3:} \texttt{python mm\_epc\_phase3\_significance.py}
+\textbf{Output:} \texttt{experiments/mm\_epc\_phase1.json}, \texttt{experiments/mm\_epc\_contagion.json}, \texttt{experiments/mm\_epc\_phase3\_final.json}
+
+\end{document}

@@ -1,0 +1,40 @@
+=== 图表适配说明 ===
+
+原始论文有5张彩图，需要改为黑白矢量图。当前.docx中已用表格替代。
+
+【图1 - PCI对比图】
+原图：fig2_pci_comparison.pdf（彩色柱状图）
+要求：改为黑白矢量图（Visio/AI/Origin均可）
+内容：三个柱状条 - GPT-4o跨模型(1.464), DeepSeek自评估(0.461), 真实基准(0.251)
+建议：用不同纹理/灰度填充替代颜色，Origin导出emf格式
+
+【图2 - 策略权重分布图】
+原图：fig1_strategy_weights.pdf（彩色，橙色标注视觉策略）
+要求：改为黑白矢量图
+内容：11种策略的权重分布，step_by_step最高(0.484)，3种视觉策略合计仅0.091
+建议：用灰度/斜线填充区分文本/视觉策略
+
+【图3 - 策略反转图】
+原图：fig4_strategy_shift.pdf
+要求：黑白矢量图
+内容：纯文本→synthesis, 纯视觉→step_by_step, 传染后互换
+建议：箭头流程图，Excel或Visio绘制
+
+【图4 - 传染矩阵热力图】
+原图：fig3_contagion_heatmap.pdf（彩色热力图）
+要求：改为三线表或灰度矩阵。热力图禁止，因期刊不出彩图
+内容：Γ=[[1.000, 0.832],[0.847, 1.000]]
+建议：直接用三线表呈现数值，或灰度矩阵
+
+【图5 - 模态PCI分解图】
+原图：fig5_modality_breakdown.pdf
+要求：黑白矢量图
+内容：文本PCI(1.348) vs 视觉PCI(1.464)
+建议：双柱状图，灰度填充
+
+【图文件要求】：
+- 格式：AI、Visio、Origin、Excel、CDR、Word、PPT、emf均可
+- 禁止：tif、JPG（无图层）
+- Excel制图直接提供Excel；
+- Visio制图提供Visio低版本；
+- 其他软件导出AI/emf/PDF
