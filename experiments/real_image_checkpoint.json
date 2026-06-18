@@ -1,0 +1,125 @@
+{
+  "results": [
+    {
+      "rep": 1,
+      "gTV": 1.902,
+      "gVT": 1.0176,
+      "asym": 0.3029,
+      "dir": "T->V",
+      "top_T": "critical_check",
+      "top_V": "step_by_step",
+      "top_TV": "critical_check",
+      "top_VT": "evidence_cite",
+      "time": 3045.139270544052
+    },
+    {
+      "rep": 2,
+      "gTV": 1.2293,
+      "gVT": 0.9069,
+      "asym": 0.1509,
+      "dir": "T->V",
+      "top_T": "aesthetic_frame",
+      "top_V": "step_by_step",
+      "top_TV": "aesthetic_frame",
+      "top_VT": "synthesis",
+      "time": 6288.844976425171
+    },
+    {
+      "rep": 3,
+      "gTV": 0.6981,
+      "gVT": 1.0324,
+      "asym": 0.1932,
+      "dir": "V->T",
+      "top_T": "first_principles",
+      "top_V": "step_by_step",
+      "top_TV": "first_principles",
+      "top_VT": "step_by_step",
+      "time": 9444.412650346756
+    },
+    {
+      "rep": 4,
+      "gTV": 1.3546,
+      "gVT": 1.0963,
+      "asym": 0.1054,
+      "dir": "T->V",
+      "top_T": "spatial_decompose",
+      "top_V": "step_by_step",
+      "top_TV": "spatial_decompose",
+      "top_VT": "synthesis",
+      "time": 12815.733039617538
+    },
+    {
+      "rep": 5,
+      "gTV": 0.8756,
+      "gVT": 0.531,
+      "asym": 0.245,
+      "dir": "T->V",
+      "top_T": "evidence_cite",
+      "top_V": "step_by_step",
+      "top_TV": "evidence_cite",
+      "top_VT": "evidence_cite",
+      "time": 16012.010414123535
+    },
+    {
+      "rep": 6,
+      "gTV": 0.5911,
+      "gVT": 1.073,
+      "asym": 0.2896,
+      "dir": "V->T",
+      "top_T": "synthesis",
+      "top_V": "step_by_step",
+      "top_TV": "synthesis",
+      "top_VT": "first_principles",
+      "time": 3078.9415373802185
+    },
+    {
+      "rep": 7,
+      "gTV": 0.8115,
+      "gVT": 1.2946,
+      "asym": 0.2294,
+      "dir": "V->T",
+      "top_T": "critical_check",
+      "top_V": "step_by_step",
+      "top_TV": "critical_check",
+      "top_VT": "evidence_cite",
+      "time": 6159.177154541016
+    },
+    {
+      "rep": 8,
+      "gTV": 1.4387,
+      "gVT": 0.2015,
+      "asym": 0.7543,
+      "dir": "T->V",
+      "top_T": "evidence_cite",
+      "top_V": "step_by_step",
+      "top_TV": "evidence_cite",
+      "top_VT": "evidence_cite",
+      "time": 9305.907902956009
+    },
+    {
+      "rep": 9,
+      "gTV": 1.2926,
+      "gVT": 1.2835,
+      "asym": 0.0035,
+      "dir": "T->V",
+      "top_T": "evidence_cite",
+      "top_V": "step_by_step",
+      "top_TV": "evidence_cite",
+      "top_VT": "step_by_step",
+      "time": 12568.403816699982
+    },
+    {
+      "rep": 10,
+      "gTV": 1.2604,
+      "gVT": 0.9352,
+      "asym": 0.1481,
+      "dir": "T->V",
+      "top_T": "critical_check",
+      "top_V": "step_by_step",
+      "top_TV": "critical_check",
+      "top_VT": "spatial_decompose",
+      "time": 15627.903319835663
+    }
+  ],
+  "last": 10
+}

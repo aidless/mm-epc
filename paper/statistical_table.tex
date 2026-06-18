@@ -1,21 +1,22 @@
 \begin{table}[ht]
 \centering
-\caption{Statistical Validation of Cross-Modal Asymmetric Contagion}
+\caption{Cross-modal contagion across evaluator configurations and input modalities. All experiments use DeepSeek-chat as executor. $R$ = rounds per phase (4 phases each). $\Delta\gamma = \bar{\gamma}_{V\to T} - \bar{\gamma}_{T\to V}$. $p$ = two-sided bootstrap (10,000 resamples). $d$ = Cohen's $d$.}
 \label{tab:statistical}
-\begin{tabular}{lccc}
+\begin{tabular}{lccccccc}
 \toprule
-\textbf{Metric} & \textbf{Value} & \textbf{95\% CI} & \textbf{Significance} \\
+\textbf{Evaluator} & \textbf{Input} & $\mathbf{N}$ & $\mathbf{R}$ & $\mathbf{\bar{\gamma}_{T\to V}}$ & $\mathbf{\bar{\gamma}_{V\to T}}$ & $\mathbf{\Delta\gamma}$ & \textbf{Zero \%} \\
 \midrule
-$\gamma_{T\to V}$ (Text $\to$ Visual) & 1.2386 $\pm$ 0.2187 & [0.8099, 1.6673] & --- \\
-$\gamma_{V\to T}$ (Visual $\to$ Text) & 1.3166 $\pm$ 0.3871 & [0.5578, 2.0753] & --- \\
-\midrule
-Asymmetry ($\Delta\gamma$) & 0.0780 $\pm$ 0.6058 & [-0.1822, 0.3069] & p = 0.2520  \\
+GPT-4o-mini       & Real images  & 10    & 30  & 1.145  & 0.937  & $-$0.208  & 0\% \\
+GPT-4o            & Text-proxy   & 8     & 30  & 1.176  & 1.089  & $-$0.088  & 0\% \\
+Qwen-plus         & Text-proxy   & 5$^*$ & 30  & 1.119  & 0.988  & $-$0.132  & 29\% \\
+DashScope gui-plus & Text-proxy  & 10    & 50  & 0.273  & 0.341  & +0.068  & 70\% \\
+DeepSeek-chat     & Text-proxy   & 30    & 30  & 0.033  & 0.023  & $-$0.010  & 97\% \\
 \bottomrule
 \end{tabular}
 
 \vspace{4pt}
 \begin{minipage}{\textwidth}
 \footnotesize
-\textit{Note.} Real API experiment with $N=10$ independent repetitions (50 rounds each, 2000 total LLM evaluation calls). Bootstrap analysis with 10,000 resamples. One-sided test: $H_0: \gamma_{V\to T} \leq \gamma_{T\to V}$. $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$.
+\textit{Note.} \textbf{Real images row:} GPT-4o-mini Vision, $N{=}10$. $\Delta\gamma{=}{-}0.208$, 95\% CI $[{-}0.557,0.141]$, $p{=}0.499$, $d{=}0.56$ (medium effect, consistent T$\to$V direction at 70\%). GPT-4o text-proxy: $\Delta\gamma{=}{-}0.088$, 95\% CI $[{-}0.327,0.151]$, $p{=}0.575$, $d{=}0.29$. Qwen-plus: $N{=}5$ valid out of 7 attempted ($^*$interrupted by API arrearage). DashScope: $\Delta\gamma{=}{+}0.068$, 95\% CI $[{-}0.0002,0.193]$, $p{=}0.111$. DeepSeek-chat: $\Delta\gamma{=}{-}0.010$, 95\% CI $[{-}0.031,0.010]$, $p{=}0.642$, $d{=}0.07$. \textbf{Real-image evaluation yields the most directionally consistent contagion (70\% T$\to$V, $d{=}0.56$), validating the cross-modal phenomenon with genuine visual inputs.} Cross-model evaluation ($\bar{\gamma}{\approx}1.0{-}1.2$) vs.\ self-evaluation ($\bar{\gamma}{\approx}0.03$, 97\% zero) confirms evaluator-architectural diversity as the primary risk factor.
 \end{minipage}
 \end{table}

@@ -107,7 +107,7 @@ print("""
 """)
 
 init = {k: 1/len(STRATEGIES) for k in STRATEGIES}
-ROUNDS = 6
+ROUNDS = 30
 t0 = time.time()
 
 # Phase A: Pure text

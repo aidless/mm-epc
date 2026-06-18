@@ -1,0 +1,18 @@
+{
+  "test": "N=1, R=3 quick validation",
+  "result": {
+    "gamma_TV": 0.4031,
+    "gamma_VT": 0.544,
+    "asymmetry": 0.1488,
+    "direction": "symmetric",
+    "w_T_top": "step_by_step",
+    "w_V_top": "evidence_cite",
+    "w_TV_top": "step_by_step",
+    "w_VT_top": "evidence_cite",
+    "time": 129.6
+  },
+  "api_tested": {
+    "executor": "deepseek-chat (OK, ~1s/call)",
+    "evaluator": "qwen-plus via Bailian (OK, ~0.6s/call)"
+  }
+}

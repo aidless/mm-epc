@@ -1,0 +1,979 @@
+{
+  "analysis_time": "2026-06-11T15:56:08.698990",
+  "total_papers": 10002,
+  "year_distribution": {
+    "2020": 1667,
+    "2021": 1667,
+    "2022": 1667,
+    "2023": 1667,
+    "2024": 1667,
+    "2025": 1667
+  },
+  "category_distribution": {
+    "cs.IR": 320,
+    "cs.LG": 4870,
+    "stat.ML": 1156,
+    "cs.CV": 3348,
+    "cs.CR": 335,
+    "eess.IV": 703,
+    "physics.optics": 13,
+    "cs.AI": 2706,
+    "cs.HC": 286,
+    "cs.SI": 421,
+    "eess.SY": 264,
+    "cs.RO": 859,
+    "cs.CL": 1554,
+    "cs.DC": 151,
+    "physics.med-ph": 28,
+    "eess.SP": 280,
+    "cs.MM": 116,
+    "cs.DS": 56,
+    "math.OC": 256,
+    "quant-ph": 67,
+    "q-bio.TO": 7,
+    "cs.NE": 270,
+    "cs.IT": 118,
+    "gr-qc": 5,
+    "astro-ph.IM": 40,
+    "cs.SD": 228,
+    "eess.AS": 244,
+    "cs.CY": 309,
+    "cs.DB": 72,
+    "cond-mat.soft": 10,
+    "cs.MA": 139,
+    "cond-mat.dis-nn": 29,
+    "stat.AP": 113,
+    "physics.app-ph": 12,
+    "stat.ME": 132,
+    "astro-ph.EP": 18,
+    "astro-ph.SR": 11,
+    "cs.FL": 17,
+    "cs.LO": 48,
+    "q-bio.QM": 69,
+    "cond-mat.stat-mech": 27,
+    "math.DS": 47,
+    "cs.SE": 158,
+    "cs.DL": 22,
+    "q-bio.GN": 24,
+    "cs.GR": 86,
+    "cs.PL": 29,
+    "q-fin.ST": 26,
+    "math.ST": 102,
+    "math.PR": 35,
+    "math.NA": 94,
+    "cs.ET": 33,
+    "math.CO": 10,
+    "q-bio.BM": 31,
+    "physics.ao-ph": 22,
+    "stat.CO": 51,
+    "q-fin.PM": 7,
+    "q-fin.CP": 15,
+    "physics.data-an": 44,
+    "nlin.AO": 11,
+    "cs.CE": 49,
+    "physics.flu-dyn": 31,
+    "physics.soc-ph": 94,
+    "cs.CG": 23,
+    "math.AT": 9,
+    "cs.NI": 128,
+    "cs.CC": 18,
+    "hep-ex": 8,
+    "econ.GN": 17,
+    "cs.PF": 31,
+    "cond-mat.mes-hall": 9,
+    "math.DG": 5,
+    "cs.DM": 13,
+    "q-bio.NC": 57,
+    "physics.comp-ph": 48,
+    "physics.geo-ph": 19,
+    "q-fin.GN": 10,
+    "cs.OH": 2,
+    "nlin.CD": 11,
+    "physics.atom-ph": 1,
+    "cs.GT": 59,
+    "physics.bio-ph": 9,
+    "q-bio.MN": 7,
+    "math.LO": 6,
+    "math.GN": 2,
+    "q-bio.PE": 15,
+    "cs.AR": 39,
+    "hep-ph": 6,
+    "econ.EM": 25,
+    "math.AP": 9,
+    "math.FA": 9,
+    "nucl-th": 1,
+    "nucl-ex": 2,
+    "cond-mat.mtrl-sci": 39,
+    "math-ph": 7,
+    "q-fin.TR": 10,
+    "physics.plasm-ph": 2,
+    "econ.TH": 4,
+    "physics.hist-ph": 3,
+    "cs.MS": 8,
+    "astro-ph.CO": 15,
+    "cs.SC": 7,
+    "math.AC": 2,
+    "q-fin.RM": 5,
+    "physics.chem-ph": 24,
+    "q-bio.OT": 3,
+    "math.AG": 2,
+    "physics.ins-det": 10,
+    "stat.OT": 5,
+    "math.RA": 2,
+    "astro-ph.GA": 14,
+    "q-fin.MF": 2,
+    "math.CA": 2,
+    "cs.GL": 2,
+    "nlin.PS": 2,
+    "nlin.SI": 1,
+    "math.GT": 3,
+    "cond-mat.quant-gas": 1,
+    "math.MG": 3,
+    "hep-th": 4,
+    "math.HO": 2,
+    "cond-mat.str-el": 3,
+    "physics.space-ph": 4,
+    "physics.acc-ph": 4,
+    "math.SG": 1,
+    "astro-ph.HE": 4,
+    "q-bio.CB": 3,
+    "math.OA": 1,
+    "hep-lat": 2,
+    "physics.pop-ph": 1,
+    "math.GR": 1,
+    "physics.class-ph": 1,
+    "math.SP": 2,
+    "math.CV": 2,
+    "cs.OS": 1,
+    "math.RT": 1,
+    "math.CT": 1,
+    "math.NT": 1,
+    "nlin.CG": 1,
+    "q-bio.SC": 1,
+    "q-fin.PR": 1
+  },
+  "keywords_trend": {
+    "2020": [
+      [
+        "The",
+        1521
+      ],
+      [
+        "proposed",
+        767
+      ],
+      [
+        "This",
+        622
+      ],
+      [
+        "methods",
+        546
+      ],
+      [
+        "training",
+        541
+      ],
+      [
+        "image",
+        515
+      ],
+      [
+        "Our",
+        492
+      ],
+      [
+        "two",
+        484
+      ],
+      [
+        "information",
+        454
+      ],
+      [
+        "paper,",
+        444
+      ],
+      [
+        "problem",
+        406
+      ],
+      [
+        "However,",
+        403
+      ],
+      [
+        "Learning",
+        385
+      ],
+      [
+        "into",
+        367
+      ],
+      [
+        "state-of-the-art",
+        344
+      ],
+      [
+        "machine",
+        330
+      ],
+      [
+        "detection",
+        305
+      ],
+      [
+        "features",
+        304
+      ],
+      [
+        "images",
+        303
+      ],
+      [
+        "over",
+        299
+      ],
+      [
+        "existing",
+        297
+      ],
+      [
+        "one",
+        297
+      ],
+      [
+        "classification",
+        293
+      ],
+      [
+        "first",
+        289
+      ],
+      [
+        "time",
+        286
+      ],
+      [
+        "work",
+        274
+      ],
+      [
+        "well",
+        270
+      ],
+      [
+        "Deep",
+        265
+      ],
+      [
+        "approaches",
+        265
+      ],
+      [
+        "while",
+        262
+      ]
+    ],
+    "2021": [
+      [
+        "The",
+        1419
+      ],
+      [
+        "proposed",
+        721
+      ],
+      [
+        "This",
+        680
+      ],
+      [
+        "methods",
+        571
+      ],
+      [
+        "training",
+        534
+      ],
+      [
+        "Our",
+        530
+      ],
+      [
+        "two",
+        485
+      ],
+      [
+        "information",
+        464
+      ],
+      [
+        "Learning",
+        434
+      ],
+      [
+        "However,",
+        425
+      ],
+      [
+        "paper,",
+        424
+      ],
+      [
+        "image",
+        414
+      ],
+      [
+        "into",
+        403
+      ],
+      [
+        "detection",
+        392
+      ],
+      [
+        "problem",
+        381
+      ],
+      [
+        "over",
+        376
+      ],
+      [
+        "state-of-the-art",
+        375
+      ],
+      [
+        "machine",
+        357
+      ],
+      [
+        "existing",
+        336
+      ],
+      [
+        "features",
+        331
+      ],
+      [
+        "classification",
+        320
+      ],
+      [
+        "while",
+        299
+      ],
+      [
+        "time",
+        295
+      ],
+      [
+        "work",
+        276
+      ],
+      [
+        "number",
+        274
+      ],
+      [
+        "images",
+        269
+      ],
+      [
+        "one",
+        266
+      ],
+      [
+        "first",
+        263
+      ],
+      [
+        "Deep",
+        259
+      ],
+      [
+        "well",
+        258
+      ]
+    ],
+    "2022": [
+      [
+        "The",
+        1649
+      ],
+      [
+        "proposed",
+        800
+      ],
+      [
+        "This",
+        675
+      ],
+      [
+        "methods",
+        666
+      ],
+      [
+        "training",
+        548
+      ],
+      [
+        "Our",
+        503
+      ],
+      [
+        "However,",
+        488
+      ],
+      [
+        "two",
+        471
+      ],
+      [
+        "information",
+        468
+      ],
+      [
+        "image",
+        465
+      ],
+      [
+        "Learning",
+        441
+      ],
+      [
+        "paper,",
+        406
+      ],
+      [
+        "state-of-the-art",
+        401
+      ],
+      [
+        "into",
+        374
+      ],
+      [
+        "existing",
+        368
+      ],
+      [
+        "features",
+        363
+      ],
+      [
+        "problem",
+        347
+      ],
+      [
+        "time",
+        333
+      ],
+      [
+        "machine",
+        327
+      ],
+      [
+        "classification",
+        323
+      ],
+      [
+        "feature",
+        323
+      ],
+      [
+        "detection",
+        322
+      ],
+      [
+        "while",
+        311
+      ],
+      [
+        "over",
+        298
+      ],
+      [
+        "one",
+        296
+      ],
+      [
+        "work",
+        293
+      ],
+      [
+        "graph",
+        284
+      ],
+      [
+        "first",
+        274
+      ],
+      [
+        "images",
+        272
+      ],
+      [
+        "available",
+        270
+      ]
+    ],
+    "2023": [
+      [
+        "The",
+        1457
+      ],
+      [
+        "proposed",
+        695
+      ],
+      [
+        "methods",
+        645
+      ],
+      [
+        "This",
+        600
+      ],
+      [
+        "training",
+        575
+      ],
+      [
+        "Our",
+        515
+      ],
+      [
+        "However,",
+        513
+      ],
+      [
+        "two",
+        483
+      ],
+      [
+        "into",
+        449
+      ],
+      [
+        "information",
+        441
+      ],
+      [
+        "image",
+        438
+      ],
+      [
+        "Learning",
+        422
+      ],
+      [
+        "existing",
+        379
+      ],
+      [
+        "paper,",
+        376
+      ],
+      [
+        "feature",
+        371
+      ],
+      [
+        "state-of-the-art",
+        370
+      ],
+      [
+        "problem",
+        355
+      ],
+      [
+        "features",
+        338
+      ],
+      [
+        "over",
+        323
+      ],
+      [
+        "while",
+        299
+      ],
+      [
+        "first",
+        296
+      ],
+      [
+        "work",
+        296
+      ],
+      [
+        "images",
+        294
+      ],
+      [
+        "detection",
+        294
+      ],
+      [
+        "machine",
+        294
+      ],
+      [
+        "time",
+        285
+      ],
+      [
+        "human",
+        280
+      ],
+      [
+        "classification",
+        275
+      ],
+      [
+        "available",
+        259
+      ],
+      [
+        "language",
+        258
+      ]
+    ],
+    "2024": [
+      [
+        "The",
+        1403
+      ],
+      [
+        "This",
+        899
+      ],
+      [
+        "methods",
+        665
+      ],
+      [
+        "Our",
+        639
+      ],
+      [
+        "proposed",
+        597
+      ],
+      [
+        "training",
+        576
+      ],
+      [
+        "However,",
+        563
+      ],
+      [
+        "into",
+        490
+      ],
+      [
+        "image",
+        489
+      ],
+      [
+        "information",
+        475
+      ],
+      [
+        "language",
+        465
+      ],
+      [
+        "existing",
+        420
+      ],
+      [
+        "two",
+        407
+      ],
+      [
+        "while",
+        401
+      ],
+      [
+        "across",
+        385
+      ],
+      [
+        "introduce",
+        362
+      ],
+      [
+        "Learning",
+        361
+      ],
+      [
+        "state-of-the-art",
+        353
+      ],
+      [
+        "potential",
+        341
+      ],
+      [
+        "human",
+        330
+      ],
+      [
+        "address",
+        326
+      ],
+      [
+        "features",
+        325
+      ],
+      [
+        "paper,",
+        321
+      ],
+      [
+        "over",
+        310
+      ],
+      [
+        "first",
+        296
+      ],
+      [
+        "Language",
+        293
+      ],
+      [
+        "images",
+        286
+      ],
+      [
+        "classification",
+        272
+      ],
+      [
+        "detection",
+        272
+      ],
+      [
+        "feature",
+        272
+      ]
+    ],
+    "2025": [
+      [
+        "The",
+        1245
+      ],
+      [
+        "This",
+        913
+      ],
+      [
+        "methods",
+        690
+      ],
+      [
+        "Our",
+        688
+      ],
+      [
+        "However,",
+        574
+      ],
+      [
+        "training",
+        572
+      ],
+      [
+        "into",
+        563
+      ],
+      [
+        "across",
+        560
+      ],
+      [
+        "while",
+        547
+      ],
+      [
+        "existing",
+        497
+      ],
+      [
+        "proposed",
+        470
+      ],
+      [
+        "address",
+        468
+      ],
+      [
+        "image",
+        453
+      ],
+      [
+        "language",
+        438
+      ],
+      [
+        "introduce",
+        420
+      ],
+      [
+        "information",
+        414
+      ],
+      [
+        "two",
+        376
+      ],
+      [
+        "state-of-the-art",
+        367
+      ],
+      [
+        "Models",
+        341
+      ],
+      [
+        "often",
+        341
+      ],
+      [
+        "features",
+        341
+      ],
+      [
+        "potential",
+        333
+      ],
+      [
+        "Learning",
+        327
+      ],
+      [
+        "Language",
+        324
+      ],
+      [
+        "generation",
+        312
+      ],
+      [
+        "visual",
+        312
+      ],
+      [
+        "over",
+        308
+      ],
+      [
+        "significantly",
+        298
+      ],
+      [
+        "paper,",
+        295
+      ],
+      [
+        "Large",
+        285
+      ]
+    ]
+  },
+  "geo_distribution": {
+    "USA": 6396,
+    "France": 245,
+    "China": 28,
+    "Unknown/Other": 2972,
+    "Singapore": 129,
+    "Australia": 161,
+    "South Korea": 4,
+    "India": 11,
+    "Europe": 14,
+    "UK": 11,
+    "Canada": 7,
+    "Germany": 22,
+    "Japan": 1,
+    "Israel": 1
+  },
+  "tech_trends": {
+    "2020": {
+      "Reinforcement Learning": 568,
+      "AI Ethics": 84,
+      "Computer Vision": 600,
+      "Generative AI": 178,
+      "AI Safety": 142,
+      "Large Language Models": 181,
+      "Edge AI": 294,
+      "Embodied AI": 145,
+      "Multimodal AI": 34,
+      "Federated Learning": 18
+    },
+    "2021": {
+      "Edge AI": 354,
+      "Large Language Models": 238,
+      "Reinforcement Learning": 567,
+      "Computer Vision": 570,
+      "Generative AI": 177,
+      "AI Safety": 194,
+      "AI Ethics": 74,
+      "Federated Learning": 30,
+      "Embodied AI": 151,
+      "Multimodal AI": 35
+    },
+    "2022": {
+      "Large Language Models": 284,
+      "Computer Vision": 563,
+      "Reinforcement Learning": 624,
+      "AI Ethics": 104,
+      "AI Safety": 189,
+      "Edge AI": 341,
+      "Generative AI": 173,
+      "Embodied AI": 112,
+      "Multimodal AI": 50,
+      "Federated Learning": 25
+    },
+    "2023": {
+      "Reinforcement Learning": 634,
+      "Edge AI": 355,
+      "Computer Vision": 563,
+      "Large Language Models": 312,
+      "AI Safety": 207,
+      "Federated Learning": 45,
+      "AI Ethics": 121,
+      "Embodied AI": 139,
+      "Generative AI": 187,
+      "Multimodal AI": 63
+    },
+    "2024": {
+      "Computer Vision": 555,
+      "Reinforcement Learning": 617,
+      "Generative AI": 253,
+      "Large Language Models": 554,
+      "Edge AI": 334,
+      "Federated Learning": 48,
+      "AI Ethics": 99,
+      "AI Safety": 275,
+      "Embodied AI": 124,
+      "Multimodal AI": 124
+    },
+    "2025": {
+      "Large Language Models": 652,
+      "Reinforcement Learning": 706,
+      "Edge AI": 359,
+      "AI Ethics": 121,
+      "AI Safety": 319,
+      "Federated Learning": 48,
+      "Computer Vision": 566,
+      "Generative AI": 258,
+      "Embodied AI": 131,
+      "Multimodal AI": 159
+    }
+  }
+}

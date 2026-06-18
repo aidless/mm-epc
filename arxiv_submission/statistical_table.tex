@@ -1,0 +1,21 @@
+\begin{table}[ht]
+\centering
+\caption{Cross-modal contagion across evaluator configurations. All experiments use DeepSeek-chat as executor. $R$ = rounds per phase (4 phases each). $\Delta\gamma = \bar{\gamma}_{V\to T} - \bar{\gamma}_{T\to V}$. $p$ = two-sided bootstrap (10,000 resamples). $d$ = Cohen's $d$.}
+\label{tab:statistical}
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Evaluator} & \textbf{Type} & $\mathbf{N}$ & $\mathbf{R}$ & $\mathbf{\bar{\gamma}_{T\to V}}$ & $\mathbf{\bar{\gamma}_{V\to T}}$ & $\mathbf{\Delta\gamma}$ & \textbf{Zero \%} \\
+\midrule
+GPT-4o            & Cross-model  & 8     & 30  & 1.176  & 1.089  & $-$0.088  & 0\% \\
+Qwen-plus         & Cross-model  & 5$^*$ & 30  & 1.119  & 0.988  & $-$0.132  & 29\% \\
+DashScope gui-plus & Cross-model & 10    & 50  & 0.273  & 0.341  & +0.068  & 70\% \\
+DeepSeek-chat     & Self-eval    & 30    & 30  & 0.033  & 0.023  & $-$0.010  & 97\% \\
+\bottomrule
+\end{tabular}
+
+\vspace{4pt}
+\begin{minipage}{\textwidth}
+\footnotesize
+\textit{Note.} GPT-4o: $N=8$, $\Delta\gamma=-0.088$, 95\% CI $[-0.327, 0.151]$, $p=0.575$, $d=0.29$ (not significant). Qwen-plus: $N=5$ valid out of 7 attempted ($^*$interrupted by API arrearage). DashScope: $\Delta\gamma=+0.068$, 95\% CI $[-0.0002, 0.193]$, $p=0.111$. DeepSeek-chat: $\Delta\gamma=-0.010$, 95\% CI $[-0.031, 0.010]$, $p=0.642$, $d=0.07$. \textbf{Cross-model evaluators produce strong bidirectional contagion ($\bar{\gamma} \approx 1.0$--$1.2$); self-evaluation provides near-complete immunity (97\% zero contagion, $d=0.07$). No condition shows statistically significant directional asymmetry.}
+\end{minipage}
+\end{table}
