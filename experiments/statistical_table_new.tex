@@ -1,0 +1,20 @@
+\begin{table}[ht]
+\centering
+\caption{Statistical validation of cross-modal contagion across evaluator configurations.}
+\label{tab:statistical}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Config} & \textbf{N} & $\bm{\bar{\gamma}_{T\to V}}$ & $\bm{\bar{\gamma}_{V\to T}}$ & $\bm{\Delta\gamma}$ & \textbf{95\% CI} & $\bm{p}$ \\
+\midrule
+GPT-4o (30r, single)     & 1    & 0.832  & 0.847  & 0.015  & ---           & --- \\
+DashScope (50r)          & 10   & 0.273  & 0.341  & 0.068  & [-0.00,0.19]  & 0.111 \\
+Qwen-plus (30r)          & 30   & TBD    & TBD    & TBD    & TBD           & TBD \\
+\bottomrule
+\end{tabular}
+
+\vspace{4pt}
+\begin{minipage}{\textwidth}
+\footnotesize
+\textit{Note.} GPT-4o: single-run Phase 2. DashScope: Phase 3a, $N=10$ independent repetitions, 50 rounds/phase, 2000 total LLM calls. Qwen-plus: Phase 3b, $N=30$ independent repetitions, 30 rounds/phase, 3,600 TTRL rounds ($\sim$10,800 API calls), bootstrap with 10,000 resamples. Two-sided $H_0: \gamma_{T\to V} = \gamma_{V\to T}$. $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$.
+\end{minipage}
+\end{table}

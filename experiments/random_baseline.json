@@ -1,0 +1,37 @@
+{
+  "description": "Random evaluator baseline (shuffled judgments, 50/50 coin flip)",
+  "notes": "Simulates TTRL where evaluator randomly picks winner. No real API calls.",
+  "results": {
+    "6": {
+      "N": 100,
+      "mean_pci": 0.454,
+      "sd_pci": 0.1175,
+      "se_pci": 0.0118,
+      "ci_95_lo": 0.431,
+      "ci_95_hi": 0.477,
+      "min_pci": 0.1792,
+      "max_pci": 0.8092
+    },
+    "30": {
+      "N": 100,
+      "mean_pci": 0.975,
+      "sd_pci": 0.2455,
+      "se_pci": 0.0245,
+      "ci_95_lo": 0.9269,
+      "ci_95_hi": 1.0231,
+      "min_pci": 0.4982,
+      "max_pci": 1.8593
+    },
+    "50": {
+      "N": 100,
+      "mean_pci": 1.2327,
+      "sd_pci": 0.2725,
+      "se_pci": 0.0273,
+      "ci_95_lo": 1.1793,
+      "ci_95_hi": 1.2861,
+      "min_pci": 0.5546,
+      "max_pci": 2.0219
+    }
+  },
+  "theoretical_pci_uniform": 0.0
+}

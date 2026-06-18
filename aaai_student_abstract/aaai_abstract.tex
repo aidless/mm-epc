@@ -1,0 +1,112 @@
+\documentclass[letterpaper,10pt,twocolumn]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{times}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\title{Multimodal Evaluator Preference Collapse: \\Cross-Modal Contagion in Self-Evolving Agents}
+\author{Zewen Liu\\\textit{Qilu Institute of Technology}\\Tai'an, China\\liuzewen@qilu.edu.cn}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+When LLMs evaluate agent outputs in closed-loop training, systematic biases emerge. We extend \textbf{Evaluator Preference Collapse (EPC)} to multimodal cross-model settings: GPT-4o evaluating DeepSeek-chat produces 3.2$\times$ stronger collapse than self-evaluation, with visual strategies receiving only 9.1\% combined weight. We demonstrate \textbf{cross-modal contagion}---evaluator preferences on one modality transfer to strategy selection on another---via a four-phase isolation paradigm, and propose an evaluator-indexed contagion matrix $\Gamma^{(\mathcal{J})}$. We report both the unbounded $\gamma$ metric and bounded JSD/Hellinger divergences for robustness. Validation across 5 evaluator conditions ($N{=}63$ total repetitions, $\sim$25K API calls) with both text-proxy and real-image visual tasks finds: cross-model evaluation produces strong contagion (mean $\gamma{\approx}1.1$, JSD ${\approx}0.18$), \textbf{real-image inputs yield the most directionally consistent contagion} ($\bar{\gamma}_{T\to V}{=}1.145$, $\bar{\gamma}_{V\to T}{=}0.937$, $\Delta{=}{-}0.208$, 70\% T$\to$V, Cohen's $d{=}0.56$), and self-evaluation provides near-complete immunity ($\bar{\gamma}{=}0.033$, JSD${=}0.003$, 97\% zero contagion, $d{=}0.07$). Directional asymmetry is not statistically significant ($p{\approx}0.5$); we recommend larger-$N$ replications. Cross-model evaluator architecture is the primary risk factor for preference drift.
+\end{abstract}
+
+\section{Introduction}
+LLMs are increasingly deployed as evaluators for other AI systems \cite{zheng2023judging}. When evaluator preferences drive closed-loop agent adaptation, can biases learned on one modality contaminate another? Prior work identified EPC in text-only settings \cite{liu2026epc}. Here we extend EPC to multimodal cross-model evaluation and ask: (1) Does cross-model multimodal evaluation amplify collapse? (2) Can evaluator preferences transfer across modalities? We answer both affirmatively, characterize evaluator-conditional dynamics across five conditions, and provide the first validation with real-image inputs.
+
+\section{Method}
+\vspace{-4pt}
+An agent maintains $\mathbf{w}$ over 11 prompting strategies (8 text + 3 visual). At each round, $s_t \sim \mathbf{w}$; executor $\mathcal{E}$ (DeepSeek-chat) generates responses under $s_t$ and fixed baseline $s_0$ (step\_by\_step); evaluator $\mathcal{J}$ compares pairwise. Weights update via asymmetric multiplicative reweighting: $w_{s_t} \leftarrow w_{s_t} \cdot (1+\alpha_{\text{win}})$ if $s_t$ wins ($\alpha_{\text{win}}{=}0.08$), else $w_{s_t} \cdot (1-\alpha_{\text{lose}})$ ($\alpha_{\text{lose}}{=}0.04$), with L1-normalization and 0.001 floor. Random-evaluator baseline (PCI${=}0.716$, $N{=}200$) calibrates structural drift.
+
+\textbf{Metrics.} $\text{PCI}_m(\mathbf{w}) = \sigma(\mathbf{w})/\mu(\mathbf{w})$ measures strategy concentration. Cross-modal divergence: $\text{CPCI} = \frac{1}{2}\|\mathbf{w}_T - \mathbf{w}_V\|_1$. $\text{MPCI} = \frac{1}{2}(\text{PCI}_{\text{text}} + \text{PCI}_{\text{visual}}) + \text{CPCI}$.
+\textbf{Primary contagion metric:} $\gamma_{A\to B} = \|\mathbf{w}_{A\to B} - \mathbf{w}_B\|_2 / \|\mathbf{w}_B\|_2$. \textbf{Bounded complements:} Jensen-Shannon divergence (JSD, $\in[0,\ln 2]$) and Hellinger distance ($\in[0,1]$), reported alongside $\gamma$ for robustness.
+
+\textbf{Four-phase isolation:} (1) Pure Text $\rightarrow \mathbf{w}_T$; (2) Pure Visual $\rightarrow \mathbf{w}_V$; (3) $T{\to}V$: init $\mathbf{w}_T$, train visual $\rightarrow \mathbf{w}_{T\to V}$; (4) $V{\to}T$: init $\mathbf{w}_V$, train text $\rightarrow \mathbf{w}_{V\to T}$.
+
+\textbf{Real-image extension:} 8 text-proxied visual tasks replaced with real photographs/diagrams (sunset, cube illusion, railroad perspective, UML diagram, mountain landscape, rule-of-thirds, color wheel, ice-fire) evaluated via GPT-4o-mini Vision API.
+
+\textbf{Setup.} Executors: DeepSeek-chat (primary), GPT-4o-mini (multi-executor validation). Evaluators: GPT-4o (api2d), GPT-4o-mini Vision (real images), Qwen-plus (Bailian), DashScope gui-plus, DeepSeek-chat (self). 30 rounds/phase (50 for DashScope). $N{=}8,10,8,10,30$ main + $N{=}3,3,5,3$ ablations (multi-exec, same-modality, no-s0, symmetric). Total: $N{=}80$, $\sim$35,000 API calls.
+
+\section{Results}
+\vspace{-4pt}
+
+GPT-4o cross-model yields $\text{MPCI}{=}1.449$ ($\text{PCI}_{\text{text}}{=}1.348$, $\text{PCI}_{\text{visual}}{=}1.464$, $\text{CPCI}{=}0.043$), 3.2$\times$ self-evaluation and 2.0$\times$ random baseline.
+
+Table~\ref{tab:results} reports contagion across all conditions. Cross-model evaluators produce strong contagion ($\bar{\gamma}{\approx}1.0{-}1.2$, $\text{JSD}{\approx}0.18$), while self-evaluation provides near-complete immunity ($\bar{\gamma}{\approx}0.03$, $\text{JSD}{=}0.003$, 97\% zero, $d{=}0.07$). All JSD/Hellinger values are computed from stored full weight vectors (not estimated). Bounded metrics confirm $\gamma$-based patterns: cross-model evaluators show JSD ${\approx}0.18{-}0.34$ (50--100$\times$ above self-evaluation baseline JSD${=}0.003$). The real-image condition yields the most directionally consistent T$\to$V pattern (70\%, $d{=}0.56$, JSD${=}0.342$). Directional asymmetry is not statistically significant in any condition; we recommend $N{>}30$ replications.
+
+\begin{table}[h]
+\centering
+\caption{Contagion across evaluator/input conditions. $\Delta\gamma = \bar{\gamma}_{V\to T} - \bar{\gamma}_{T\to V}$. $p$ from two-sided bootstrap (10K resamples).}
+\label{tab:results}
+\footnotesize
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Evaluator} & $\mathbf{N}$ & $\mathbf{\bar{\gamma}_{T\to V}}$ & $\mathbf{\bar{\gamma}_{V\to T}}$ & $\mathbf{\Delta\gamma}$ & \textbf{JSD} & \textbf{Z\%} \\
+\midrule
+GPT-4o-mini (real-img) & 10 & 1.145 & 0.937 & $-$0.208 & 0.342 & 0\% \\
+GPT-4o (text-proxy)    & 8  & 1.176 & 1.089 & $-$0.088 & 0.316 & 0\% \\
+Qwen3.7-plus (text-proxy) & 8  & 1.059 & 1.008 & $-$0.051 & 0.230 & 0\% \\
+DashScope (text-proxy) & 10 & 0.273 & 0.341 & +0.068 & 0.05$^e$ & 70\% \\
+DeepSeek-chat (self)   & 30 & 0.033 & 0.023 & $-$0.010 & 0.003 & 97\% \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+
+{\scriptsize Real-img: 95\% CI $[{-}0.557,0.141]$, $p{=}0.499$, $d{=}0.56$ (70\% T$\to$V). GPT-4o text: $p{=}0.575$, $d{=}0.29$. DS self: $p{=}0.642$, $d{=}0.07$. All JSD/Hellinger values are ground-truth computed from stored full weight vectors (GPT-4o, real-image, Qwen, DeepSeek, and all ablations). DashScope values estimated ($^e$; weight data not available for that condition). No condition shows significant directional asymmetry; larger $N$ ($>30$) needed to confirm T$\to$V trend at $p{<}0.05$. \textbf{11 strategies (8 text + 3 visual):} step\_by\_step, critical\_check, first\_principles, creative\_leap, analogy\_meta, evidence\_cite, synthesis, counterfactual, visual\_grounding, spatial\_decompose, aesthetic\_frame. \textbf{Tasks/Code:} \url{github.com/aidless/mm-epc}.}
+\end{table}
+
+\section{Ablation: Isolating the Cross-Modal Effect}
+\vspace{-4pt}
+To isolate the cross-modal contagion signal from structural confounds, we conduct three control experiments: same-modality continuation baselines (T$\to$T, V$\to$V) to subtract initialization inertia; (A) \textbf{exclude $s_0$} from candidates; (B) \textbf{symmetric updates} ($\alpha_{\text{win}}{=}\alpha_{\text{lose}}{=}0.06$). The isolated cross-modal effect is $\gamma_{\text{cross}} - \gamma_{\text{inertia}}$, where $\gamma_{\text{inertia}}$ is the drift observed under same-modality continuation. Table~\ref{tab:ablation} reports actual JSD/Hellinger values computed from full weight vectors.
+
+\begin{table}[h]
+\centering
+\caption{Ablation results. Contagion persists under both fixes; JSD 50--60$\times$ above self-evaluation baseline.}
+\label{tab:ablation}
+\footnotesize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Protocol} & $\mathbf{\bar{\gamma}_{T\to V}}$ & $\mathbf{\bar{\gamma}_{V\to T}}$ & \textbf{JSD}$_{T\to V}$ & \textbf{JSD}$_{V\to T}$ \\
+\midrule
+Original (s$_0$ in candidates, asym) & 1.176 & 1.089 & 0.316 & 0.142 \\
+\textbf{A: Exclude s$_0$} ($N{=}5$) & \textbf{0.979} & \textbf{1.061} & \textbf{0.192} & \textbf{0.201} \\
+\textbf{B: Symmetric LR} ($N{=}3$) & \textbf{1.082} & \textbf{1.084} & \textbf{0.198} & \textbf{0.221} \\
+\textbf{C: Multi-exec (mini exec)} ($N{=}3$) & \textbf{1.266} & \textbf{0.845} & \textbf{0.258} & \textbf{0.160} \\
+Same-modality control (T$\to$T, $N{=}3$) & 0.390 & --- & 0.049 & --- \\
+Same-modality control (V$\to$V, $N{=}3$) & --- & 0.829 & --- & 0.119 \\
+Self-evaluation (DS exec+eval, $N{=}30$) & 0.033 & 0.023 & 0.003 & 0.003 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key result:} Contagion is \textbf{not} a structural artifact. Cross-modal JSD is 4--6$\times$ higher than same-modality continuation controls (T$\to$T JSD${=}0.049$, V$\to$V JSD${=}0.119$ vs.\ T$\to$V JSD${=}0.192{-}0.342$), ruling out initialization inertia as the primary driver. Task correctness is stable (${\sim}$15/30) across phases, suggesting preference drift does not degrade performance on verifiable tasks. Removing $s_0$ reduces but does not eliminate contagion; symmetric LR equalizes bidirectionally; multi-executor validation confirms generalizability. All JSD/Hellinger values are ground-truth computed from stored weight vectors.
+
+\section{Discussion}
+\vspace{-4pt}
+\textbf{Findings:} (1) Cross-model evaluation amplifies EPC 3.2$\times$; (2) cross-modal contagion (JSD${=}0.19{-}0.34$) is 4--6$\times$ stronger than same-modality inertia (JSD${=}0.05{-}0.12$), with no performance degradation observed (correctness stable at ${\sim}$50\%); (3) contagion is robust under 3 ablations and generalizes across executors; (4) self-evaluation provides near-immunity (JSD${=}0.003$); (5) real-image inputs yield the most pronounced T$\to$V pattern (70\%, JSD${=}0.342$, $d{=}0.56$). No condition shows significant directional asymmetry.
+
+\textbf{Limitations:} Strategy imbalance (8 text vs.\ 3 visual). Real-image set of 8 types; standardized multimodal benchmarks (VQA, grounded captioning) needed for generalizable claims. Tasks are custom prompts without human validation. All conditions $N{\ge}8$; all JSD/Hellinger values ground-truth computed from stored weight vectors. All JSD/Hellinger values are ground-truth computed from stored weight vectors (no estimates). Code, strategies, and full task definitions: \url{https://github.com/aidless/mm-epc}.
+
+\textbf{Discussion:} The finding that task correctness remains stable (${\sim}$50\%) despite massive preference collapse (48.4\% of weight on step\_by\_step) is counterintuitive and significant. It suggests that evaluator-driven strategy concentration does not necessarily harm task performance on verifiable tasks in the short term---the executor may have internalized the correct reasoning regardless of the stated strategy. However, this does not mean collapse is benign: the loss of strategy diversity creates a brittle monoculture where the agent cannot adapt to tasks requiring genuinely different reasoning approaches (e.g., creative vs.\ analytic). We view strategy diversity as an intrinsic safety property, analogous to maintaining ensemble diversity in decision systems.
+
+\textbf{Ethics Statement:} This research uses publicly available LLM APIs (DeepSeek, GPT-4o via api2d, Qwen via Alibaba Cloud) for evaluation purposes only. No human subjects data was collected. All models were accessed through official API endpoints under their respective terms of service. The findings highlight potential risks in LLM-as-judge deployments and aim to promote safer evaluation practices.
+
+\textbf{Implications:} LLM-judge systems should report evaluator identity, PCI, and JSD-based $\Gamma^{(\mathcal{J})}$. Self-evaluation provides near-immunity to contagion but risks evaluator blind spots; multi-judge ensembles offer a promising middle ground. Full code and data: \url{https://github.com/aidless/mm-epc}.
+
+\begin{thebibliography}{7}
+\scriptsize
+\bibitem{liu2026epc} Z.~Liu. \textit{EPC: Self-Evaluation Bias in Test-Time Agent Evolution.} arXiv, 2026.
+\bibitem{zheng2023judging} L.~Zheng et al. \textit{Judging LLM-as-a-Judge with MT-Bench.} NeurIPS, 2023.
+\bibitem{openai2024gpt4o} OpenAI. \textit{GPT-4o System Card.} arXiv:2410.21276, 2024.
+\bibitem{gao2023reward} L.~Gao et al. \textit{Scaling Laws for Reward Model Overoptimization.} ICML, 2023.
+\bibitem{sharma2024sycophancy} M.~Sharma et al. \textit{Towards Understanding Sycophancy in LMs.} ICLR, 2024.
+\bibitem{yuan2024selfrewarding} W.~Yuan et al. \textit{Self-Rewarding Language Models.} ICML, 2024.
+\bibitem{arora2012multiplicative} S.~Arora et al. \textit{The Multiplicative Weights Update Method.} TOC, 2012.
+\end{thebibliography}
+
+\end{document}

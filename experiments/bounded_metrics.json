@@ -1,0 +1,4 @@
+{
+  "note": "Bounded divergence metrics complementing unbounded gamma. JSD/Hellinger/TV are in [0,1].",
+  "recommendation": "Use JSD or Hellinger as primary contagion metric in revised paper."
+}

@@ -1,0 +1,56 @@
+{
+  "gTV": 1.4047,
+  "gVT": 1.1518,
+  "w_T": {
+    "evidence_cite": 0.367,
+    "critical_check": 0.143,
+    "analogy_meta": 0.104,
+    "counterfactual": 0.084,
+    "step_by_step": 0.077,
+    "synthesis": 0.065,
+    "aesthetic_frame": 0.061,
+    "first_principles": 0.045,
+    "creative_leap": 0.033,
+    "spatial_decompose": 0.016,
+    "visual_grounding": 0.005
+  },
+  "w_V": {
+    "critical_check": 0.47,
+    "creative_leap": 0.147,
+    "spatial_decompose": 0.11,
+    "synthesis": 0.074,
+    "aesthetic_frame": 0.074,
+    "first_principles": 0.043,
+    "step_by_step": 0.042,
+    "evidence_cite": 0.035,
+    "visual_grounding": 0.002,
+    "analogy_meta": 0.001,
+    "counterfactual": 0.001
+  },
+  "w_TV": {
+    "evidence_cite": 0.596,
+    "creative_leap": 0.174,
+    "first_principles": 0.113,
+    "counterfactual": 0.029,
+    "critical_check": 0.028,
+    "synthesis": 0.023,
+    "aesthetic_frame": 0.021,
+    "step_by_step": 0.012,
+    "visual_grounding": 0.002,
+    "analogy_meta": 0.001,
+    "spatial_decompose": 0.001
+  },
+  "w_VT": {
+    "critical_check": 0.478,
+    "synthesis": 0.202,
+    "first_principles": 0.147,
+    "evidence_cite": 0.076,
+    "creative_leap": 0.065,
+    "spatial_decompose": 0.014,
+    "step_by_step": 0.009,
+    "aesthetic_frame": 0.006,
+    "analogy_meta": 0.001,
+    "counterfactual": 0.001,
+    "visual_grounding": 0.001
+  }
+}

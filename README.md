@@ -1,143 +1,90 @@
-# Multi-Modal Emergent Policy Contagion (MM-EPC)
+# MM-EPC: Multimodal Evaluator Preference Collapse
 
-**Asymmetric Strategy Transfer Between Text and Visual Reasoning** — a research project on how reasoning strategies leak across AI model modalities.
+**Cross-Modal Contagion in Self-Evolving Agents**
 
-> **TL;DR**: We discovered that when AI models are trained on text tasks with visual strategies (or vice versa), strategy transfer is *asymmetric* — visual-to-text contamination is significantly stronger than text-to-visual. This has direct implications for multi-modal AI architecture design and safety.
+[![arXiv](https://img.shields.io/badge/arXiv-2506.xxxxx-b31b1b)](https://arxiv.org/abs/2506.xxxxx)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey)](https://creativecommons.org/licenses/by/4.0/)
 
-[![arXiv](https://img.shields.io/badge/arXiv-2501.xxxxx-b31b1b.svg)](https://arxiv.org/abs/2501.xxxxx)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+When LLMs serve as evaluators in closed-loop agent training, systematic biases emerge. This project investigates **cross-modal contagion**: evaluator preferences learned on one modality (text/vision) transfer to and corrupt strategy selection on another.
 
----
+**Key finding**: Cross-model evaluators (GPT-4o, Qwen) induce strong contagion (JSD 50-100x above baseline), while self-evaluation provides near-complete immunity (97% zero contagion). Contagion is not a structural artifact -- it persists under 3 methodological ablations and generalizes across executors.
 
-## Why This Project Matters
+## Reproduction
 
-This is a **research paper** investigating a fundamental question in multi-modal AI: when a model is trained on both text and visual reasoning tasks, do the reasoning strategies *contaminate* each other — and if so, which direction is stronger?
-
-The answer matters for anyone building multi-modal AI systems (GPT-4V, Gemini, Claude Opus 4 with vision): **your visual training data may be silently degrading your text reasoning performance.**
-
-**Key result**: Visual-to-text strategy transfer (γ_V→T = 0.869) is significantly stronger than text-to-visual (γ_T→V = 0.851, p = 0.008). The contagion is real, measurable, and asymmetric.
-
----
-
-## What We Found
-
-### 1. Strategy Contagion Exists
-
-Reasoning strategies *emerge* and *propagate* across modalities. This isn't just "the model gets better at both" — it's "the model silently adopts strategies from one modality while working in another."
-
-| Phase | Metric | Result | Significance |
-|-------|--------|--------|-------------|
-| **1: PCI** | Cross-modal Policy Contagion Index | **1.464** | 3.2× stronger than text-only |
-| **2: Asymmetry** | γ_V→T vs γ_T→V | **0.847** vs 0.832 | p = 0.008 |
-| **3: Significance** | Bootstrap validation | CI: [0.001, 0.029] | p = 0.004 |
-
-### 2. Key Findings (Plain English)
-
-1. **Visual strategies "infect" text reasoning more strongly** — training with visual reasoning data makes the model change its text reasoning strategy, but not the other way around
-2. **Strategy reversal after cross-contamination** — pure-text models use "synthesis" strategy; after visual training, they switch to "step-by-step"; visual models do the opposite
-3. **Visual strategies are under-utilized** — visual strategies account for only 9.1% of optimal weights, suggesting current multi-modal training is suboptimal
-
-### 3. Implications for Engineering
-
-| Implication | What It Means |
-|-------------|---------------|
-| **Multi-modal architecture** | Visual reasoning pathways should be isolated or gated — don't let visual strategies silently contaminate text reasoning |
-| **Curriculum design** | Prioritize visual training early — it enhances text reasoning as a side effect |
-| **Safety** | Contagion patterns could enable adversarial attacks — an attacker might poison visual data to degrade text performance |
-| **Evaluation** | Don't just measure overall accuracy — measure cross-modal strategy transfer directly |
-
----
-
-## Reproducing the Results
-
-### Installation
+### Requirements
 ```bash
-pip install numpy scipy matplotlib
+# No external packages required (Python stdlib only)
+python --version  # Python 3.8+
 ```
 
-### Run the Full Pipeline
+### API Keys
+Set environment variables or edit scripts directly:
+- `DEEPSEEK_API_KEY` -- for executor (DeepSeek-chat)
+- `API2D_KEY` / Alibaba Cloud key -- for evaluator (GPT-4o / Qwen)
+
+### Run Experiments
+
 ```bash
-# Phase 1: Compute Policy Contagion Index
+# Phase 1: Baseline PCI measurement
 python mm_epc_phase1.py
 
-# Phase 2: Measure asymmetric transfer (γ_V→T vs γ_T→V)
-python mm_epc_phase2_contagion.py
+# Phase 2: Cross-modal contagion (single run)
+python mm_epc_contagion.py
 
-# Phase 3: Bootstrap significance validation
-python mm_epc_phase3_significance.py
+# Phase 3: Statistical validations
+python mm_epc_gpt4o_replication.py        # GPT-4o N=8
+python mm_epc_qwen37_replication.py       # Qwen3.7 N=8 (free Alibaba credits)
+python mm_epc_real_image.py               # Real-image N=10
+python mm_epc_multi_seed.py               # DeepSeek self-eval N=30
+
+# Ablations
+python mm_epc_ablation_no_s0.py           # Remove baseline from candidates
+python mm_epc_ablation_symmetric.py       # Symmetric learning rates
+python mm_epc_multiexecutor.py            # GPT-4o-mini executor
+python mm_epc_same_modality_control.py    # T->T, V->V inertia baselines
+
+# Analysis
+python compute_bounded_metrics.py         # JSD/Hellinger from weights
+python compute_random_baseline.py         # Random evaluator baseline
 ```
 
-### Expected Output
-```
-Phase 1: PCI = 1.464 (3.2x stronger than text-only baseline)
-Phase 2: γ_V→T = 0.869, γ_T→V = 0.851, p = 0.008
-Phase 3: 95% CI [0.001, 0.029], one-sided p = 0.004, Cohen's d = 0.89
-```
+## Results
 
----
+All JSON outputs in `experiments/`:
 
-## Repository Structure
+| Experiment | N | gTV | gVT | JSD_TV | Zero% |
+|-----------|----|-----|-----|--------|-------|
+| GPT-4o-mini real-image | 10 | 1.145 | 0.937 | 0.342 | 0% |
+| GPT-4o text-proxy | 8 | 1.176 | 1.089 | 0.316 | 0% |
+| Qwen3.7-plus | 8 | 1.059 | 1.008 | 0.230 | 0% |
+| DashScope | 10 | 0.273 | 0.341 | 0.05 | 70% |
+| DeepSeek self-eval | 30 | 0.033 | 0.023 | 0.003 | 97% |
+| T→T inertia control | 3 | 0.390 | -- | 0.049 | -- |
+| V→V inertia control | 3 | -- | 0.829 | 0.119 | -- |
 
-```
-mm-epc/
-├── README.md                    ← you are here
-├── paper/
-│   ├── mm_epc_paper.tex       ← LaTeX source (NeurIPS 2026 format)
-│   ├── mm_epc_paper.bib       ← bibliography
-│   └── arxiv_submission_guide.md
-├── experiments/
-│   ├── phase1_pci.json         ← Phase 1 raw results
-│   ├── phase2_contagion.json  ← Phase 2 raw results
-│   └── phase3_significance.json
-├── code/
-│   ├── mm_epc_phase3_significance.py  ← statistical validation
-│   └── visualization.py            ← paper figures
-├── figures/
-│   ├── fig1_strategy_weights.pdf
-│   ├── fig2_pci_comparison.pdf
-│   ├── fig3_contagion_heatmap.pdf
-│   ├── fig4_strategy_shift.pdf
-│   └── fig5_modality_breakdown.pdf
-└── requirements.txt
-```
-
----
+**Total: N=80 independent repetitions, ~35,000 API calls.**
 
 ## Paper
 
-- **Title**: Multi-Modal Emergent Policy Contagion: Asymmetric Strategy Transfer Between Text and Visual Reasoning
-- **Status**: Pre-print (arXiv submission in progress)
-- **Target**: NeurIPS 2026 / TMLR
-- **PDF**: [`paper/mm_epc_paper.pdf`](paper/mm_epc_paper.pdf)
-
----
+- **arXiv**: [2506.xxxxx](https://arxiv.org/abs/2506.xxxxx) (full paper, 19 pages)
+- **AAAI Student Abstract**: `aaai_student_abstract/aaai_abstract.tex`
+- **LaTeX source**: `paper/mm_epc_paper.tex`
 
 ## Citation
 
 ```bibtex
-@article{mm_epc_2025,
-  title={{Multi-Modal Emergent Policy Contagion: Asymmetric Strategy Transfer Between Text and Visual Reasoning}},
-  author={Liu, Zewen and [co-authors]},
-  journal={arXiv preprint arXiv:2501.xxxxx},
-  year={2025},
+@article{liu2026mmepc,
+  title={Multimodal Evaluator Preference Collapse: Cross-Modal Contagion in Self-Evolving Agents},
+  author={Liu, Zewen},
+  journal={arXiv preprint arXiv:2506.xxxxx},
+  year={2026}
 }
 ```
 
----
+## License
 
-## For Recruiters
-
-This project demonstrates:
-
-1. **Research ability** — formulated a novel hypothesis, designed experiments, collected results, drew conclusions
-2. **Python engineering** — clean experiment code, reproducible pipeline, statistical validation
-3. **AI/ML knowledge** — understanding of multi-modal models, reasoning strategies, cross-modal transfer
-4. **Academic communication** — paper writing, visualization, statistical rigor
-
-**I'm open to AI Application Developer / AI Researcher roles.**  
-GitHub: [@aidless](https://github.com/aidless)
+CC BY 4.0
 
 ---
 
-*Liu Zewen (刘泽文) — B.Eng. Software Engineering 2026, Qilu Institute of Technology*
+*Liu Zewen (刘泽文) -- Qilu Institute of Technology, 2026*
