@@ -2,7 +2,7 @@
 
 **Cross-Modal Contagion in Self-Evolving Agents**
 
-[![arXiv](https://img.shields.io/badge/arXiv-2506.xxxxx-b31b1b)](https://arxiv.org/abs/2506.xxxxx)
+[![arXiv](https://img.shields.io/badge/arXiv-2606.16682-b31b1b)](https://arxiv.org/abs/2606.16682)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey)](https://creativecommons.org/licenses/by/4.0/)
 
 When LLMs serve as evaluators in closed-loop agent training, systematic biases emerge. This project investigates **cross-modal contagion**: evaluator preferences learned on one modality (text/vision) transfer to and corrupt strategy selection on another.
@@ -66,9 +66,24 @@ All JSON outputs in `experiments/`:
 
 ## Paper
 
-- **arXiv**: [2506.xxxxx](https://arxiv.org/abs/2506.xxxxx) (full paper, 19 pages)
-- **AAAI Student Abstract**: `aaai_student_abstract/aaai_abstract.tex`
-- **LaTeX source**: `paper/mm_epc_paper.tex`
+- **arXiv**: [2506.xxxxx](https://arxiv.org/abs/2506.xxxxx) — full paper (19 pages), `paper/mm_epc_paper.tex`
+- **AAAI 2027 Student Abstract**: `aaai_student_abstract/aaai_abstract.tex` — 2-page standalone submission
+- `paper/statistical_table.tex` — shared between both documents
+
+## Repository Structure
+
+```
+mm-epc/
+├── README.md                       ← this file
+├── paper/
+│   ├── mm_epc_paper.tex           ← arXiv full paper
+│   └── statistical_table.tex      ← shared data table
+├── aaai_student_abstract/
+│   └── aaai_abstract.tex          ← AAAI 2-page submission
+├── mm_epc_*.py                     ← experiment scripts
+├── compute_*.py                    ← analysis scripts
+└── experiments/                    ← all result JSON files
+```
 
 ## Citation
 
