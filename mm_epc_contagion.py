@@ -10,6 +10,30 @@ Isolation Training Paradigm:
 Measures: γ_{T -> V}, γ_{V -> T}, asymmetry ratio
 """
 
+def _load_key(name: str) -> str:
+    """读取敏感 key：环境变量优先 -> 同目录/.env 兜底 -> 缺失时报错。
+
+    整改说明：原文件曾硬编码真实 key（已泄露并吊销，见 git 历史）。
+    此后一律通过环境变量或 .env 提供，禁止写回代码。
+    """
+    import os
+    v = os.environ.get(name, "").strip()
+    if v:
+        return v
+    here = os.path.dirname(os.path.abspath(__file__))
+    for d in (here, os.getcwd()):
+        p = os.path.join(d, ".env")
+        if os.path.isfile(p):
+            with open(p, encoding="utf-8", errors="ignore") as fh:
+                for line in fh:
+                    line = line.strip()
+                    if line.startswith(name + "="):
+                        return line.split("=", 1)[1].strip().strip('"').strip("'")
+    raise SystemExit(
+        f"[config] 缺少 {name}: 请 export {name}=... 或在脚本同目录 .env 写 {name}=... (不要写进代码)"
+    )
+
+
 import json, time, urllib.request, random, re, os
 from copy import deepcopy
 
@@ -18,7 +42,7 @@ with open("/mnt/c/Users/Administrator/Desktop/ai-agent-playground/.env") as f:
     for line in f:
         m = re.match(r'DEEPSEEK_API_KEY=(.+)', line)
         if m: DS_KEY = m.group(1).strip().strip('"').strip("'")
-API2D_KEY = "*REMOVED*"
+API2D_KEY = _load_key("API2D_KEY")
 
 def ds(sp, up, temp=0.7, mt=400):
     b = json.dumps({"model":"deepseek-chat","messages":[{"role":"system","content":sp or " "},{"role":"user","content":up or " "}],"max_tokens":mt,"temperature":temp}).encode()
