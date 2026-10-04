@@ -1,4 +1,5 @@
 # MM-EPC: Multimodal Evaluator Preference Collapse
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  [![Data](https://img.shields.io/badge/data-CC--BY--4.0-lightgrey.svg)](LICENSE)
 
 **Cross-Modal Contagion in Self-Evolving Agents**
 
@@ -103,3 +104,6 @@ CC BY 4.0
 ---
 
 *Liu Zewen (刘泽文) -- Qilu Institute of Technology, 2026*
+
+
+> **Dual license.** MM-EPC releases the experiments, raw results, and the evidence manifest under
