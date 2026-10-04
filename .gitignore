@@ -29,3 +29,7 @@ temp_error.txt
 # Generated files
 _output/
 _results/
+# Runtime logs (stdout/stderr) — evidence archives live under evidence/
+*.err
+*.out
+*.logfile
