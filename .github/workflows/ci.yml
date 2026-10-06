@@ -81,10 +81,37 @@ jobs:
                   --include='*.py' --include='*.md' . \
                   | grep -v '^\./\.github/workflows/' || true)"
           if [ -n "$hits" ]; then
-            echo "::warning::local machine paths are still referenced"
-            echo "$hits" | head -20
+            total="$(printf '%s\n' "$hits" | wc -l)"
+            echo "::warning::$total local machine paths are still referenced"
+            printf '%s\n' "$hits" | head -20
+            echo "::warning::showing 20 of $total; full list in local-paths.txt"
+            printf '%s\n' "$hits" > local-paths.txt
           fi
           echo "OK (advisory only)"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: local-machine-paths
+          path: local-paths.txt
+          if-no-files-found: ignore
+
+  secret-scan:
+    # S5 made .gitleaks.toml + .pre-commit-config.yaml, but nothing in CI ever ran
+    # them. The pre-commit hook is opt-in, absent from a fresh clone (.git/hooks
+    # holds only *.sample), trivially bypassed with `git commit --no-verify`, and
+    # only inspects staged content -- never history. Verified on 2026-10-05 by
+    # committing a key matching the `openai-style-key` rule: every job stayed green.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # Full history: a key leaked in an old commit is still a live key.
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
+          GITLEAKS_NOTIFY_USER_LIST: ""
 
   mutation-control:
     # Proves the syntax gate can fail. Without this a green job only proves that
