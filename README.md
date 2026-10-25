@@ -14,9 +14,20 @@ When LLMs serve as evaluators in closed-loop agent training, systematic biases e
 
 ### Requirements
 ```bash
-# No external packages required (Python stdlib only)
-python --version  # Python 3.8+
+python --version  # Python 3.8+ (CI runs on 3.12, see .github/workflows/ci.yml)
 ```
+- All `mm_epc_*.py` experiment scripts use the Python standard library only
+  (`json`, `os`, `re`, `random`, `time`, `urllib.request`), except
+  `mm_epc_phase3_significance.py`, which additionally needs `numpy` and `scipy`.
+- The `compute_*.py` analysis scripts are stdlib-only as committed;
+  `statistical_bootstrap.py` and `postprocess_phase3.py` need `numpy`/`scipy`.
+- Full dependency list for statistics/visualization tooling: `pip install -r requirements.txt`
+
+### Seeds and determinism
+- `mm_epc_multi_seed.py` seeds the PRNG per repetition (`random.seed(seed)`) and
+  fixes the bootstrap resampling seed (`random.seed(42)`).
+- Results depend on live LLM API responses (temperature>0 endpoints), so repeated
+  runs are not bit-identical; per-repetition seeds make the task/round ordering reproducible.
 
 ### API Keys
 Set environment variables or edit scripts directly:
@@ -64,6 +75,29 @@ All JSON outputs in `experiments/`:
 | V→V inertia control | 3 | -- | 0.829 | 0.119 | -- |
 
 **Total: N=80 independent repetitions, ~35,000 API calls.**
+
+### Result file map
+
+Each table row maps to raw JSON committed under `experiments/`:
+
+| Table row | Raw JSON |
+|-----------|----------|
+| GPT-4o-mini real-image | `experiments/mm_epc_real_image.json` |
+| GPT-4o text-proxy | `experiments/mm_epc_gpt4o_replication.json` |
+| Qwen3.7-plus | `experiments/mm_epc_qwen37_final.json` (+ `mm_epc_qwen_partial.json` checkpoint) |
+| DeepSeek self-eval | `experiments/mm_epc_multi_seed_ds_final.json` (N=30; mean γ 0.033/0.023; 29/30 repetitions with zero contagion) |
+| T→T / V→V inertia controls | `experiments/same_modality_checkpoint.json` |
+| Random evaluator baseline | `experiments/random_baseline.json` |
+| Phase 1 baseline PCI | `experiments/mm_epc_phase1.json` |
+| Bootstrap significance | `experiments/mm_epc_phase3_bootstrap.json` |
+
+The JSD/Hellinger columns are recomputed from the stored per-repetition weight
+vectors by `python compute_bounded_metrics.py` (it prints bounded metrics and
+writes a summary note to `experiments/bounded_metrics.json`). The DashScope
+gui-plus initial validation (N=10, R=50) is reported aggregate-only in
+`experiments/statistical_table.tex`; its per-repetition raw JSON is not committed.
+The paper-side aggregate table is `experiments/statistical_table.tex`, shared by
+`paper/mm_epc_paper.tex` and `aaai_student_abstract/aaai_abstract.tex`.
 
 ## Paper
 
