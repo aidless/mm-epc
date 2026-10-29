@@ -1,14 +1,22 @@
 # MM-EPC: Multimodal Evaluator Preference Collapse
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  [![Data](https://img.shields.io/badge/data-CC--BY--4.0-lightgrey.svg)](LICENSE)
 
-**Cross-Modal Contagion in Self-Evolving Agents**
+**Cross-Modal Coupling in Self-Evolving Agents**
 
 [![arXiv](https://img.shields.io/badge/arXiv-2606.16682-b31b1b)](https://arxiv.org/abs/2606.16682)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey)](https://creativecommons.org/licenses/by/4.0/)
 
 When LLMs serve as evaluators in closed-loop agent training, systematic biases emerge. This project investigates **cross-modal contagion**: evaluator preferences learned on one modality (text/vision) transfer to and corrupt strategy selection on another.
 
-**Key finding**: Cross-model evaluators (GPT-4o, Qwen) induce strong contagion (JSD 50-100x above baseline), while self-evaluation provides near-complete immunity (97% zero contagion). Contagion is not a structural artifact -- it persists under 3 methodological ablations and generalizes across executors.
+**Status (2026-10-28):** The canonical paper is arXiv:2606.16682v3, which is a
+preprint and has not been peer-reviewed. The AAAI 2027 student abstract is a
+submission, not an acceptance.
+
+**Key finding**: Cross-model evaluators (GPT-4o, Qwen) produce strong coupling
+(JSD approximately 0.19-0.34 across the reported configurations), while
+self-evaluation provides near-complete immunity (97% of N=30 repetitions show
+zero coupling, JSD=0.003). The repository records three methodological
+ablations and a multi-executor check.
 
 ## Reproduction
 
@@ -101,7 +109,7 @@ The paper-side aggregate table is `experiments/statistical_table.tex`, shared by
 
 ## Paper
 
-- **arXiv**: [2506.xxxxx](https://arxiv.org/abs/2506.xxxxx) — full paper (19 pages), `paper/mm_epc_paper.tex`
+- **arXiv**: [2606.16682](https://arxiv.org/abs/2606.16682) - v3 preprint, 17 pages
 - **AAAI 2027 Student Abstract**: `aaai_student_abstract/aaai_abstract.tex` — 2-page standalone submission
 - `paper/statistical_table.tex` — shared between both documents
 
@@ -124,20 +132,22 @@ mm-epc/
 
 ```bibtex
 @article{liu2026mmepc,
-  title={Multimodal Evaluator Preference Collapse: Cross-Modal Contagion in Self-Evolving Agents},
+  title={Multimodal Evaluator Preference Collapse: Cross-Modal Coupling in Self-Evolving Agents},
   author={Liu, Zewen},
-  journal={arXiv preprint arXiv:2506.xxxxx},
+  journal={arXiv preprint arXiv:2606.16682},
   year={2026}
 }
 ```
 
 ## License
 
-CC BY 4.0
+MIT for software. CC BY 4.0 for data, documentation, and pre-registration
+artifacts.
 
 ---
 
 *Liu Zewen (刘泽文) -- Qilu Institute of Technology, 2026*
 
-
 > **Dual license.** MM-EPC releases the experiments, raw results, and the evidence manifest under
+> MIT; data, documentation, and pre-registration artifacts are released under
+> CC BY 4.0.
