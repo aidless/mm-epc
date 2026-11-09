@@ -1,4 +1,6 @@
 # MM-EPC: Multimodal Evaluator Preference Collapse
+
+[![CI](https://github.com/aidless/mm-epc/actions/workflows/ci.yml/badge.svg)](https://github.com/aidless/mm-epc/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  [![Data](https://img.shields.io/badge/data-CC--BY--4.0-lightgrey.svg)](LICENSE)
 
 **Cross-Modal Coupling in Self-Evolving Agents**
