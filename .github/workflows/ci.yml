@@ -26,8 +26,8 @@ jobs:
   syntax:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.12"
       - name: Byte-compile every tracked Python file
@@ -89,7 +89,7 @@ jobs:
           fi
           echo "OK (advisory only)"
 
-      - uses: actions/upload-artifact@v4
+      - actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: local-machine-paths
@@ -104,11 +104,11 @@ jobs:
     # committing a key matching the `openai-style-key` rule: every job stayed green.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           # Full history: a key leaked in an old commit is still a live key.
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
+      - gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7
         env:
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
           GITLEAKS_NOTIFY_USER_LIST: ""
@@ -118,8 +118,8 @@ jobs:
     # compileall ran, not that it would catch anything.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.12"
       - name: Introduce a syntax error and require a non-zero exit
