@@ -32,3 +32,4 @@ are welcome and will be tracked; issues in upstream services are out of scope.
 
 Reports about the integrity of published evidence, hashes, or manifests are valued:
 the repositories here carry SHA-256 manifests, and a broken recomputation is a security issue too.
+Release 资产用此密钥（SIGNING_KEY.asc）签名，验证命令 `gpg --verify <asset>.asc <asset>`。
