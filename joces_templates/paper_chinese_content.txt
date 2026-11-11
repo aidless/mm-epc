@@ -4,10 +4,10 @@
 多模态评估者偏好坍缩：自进化智能体中的跨模态传染效应
 
 【作者】
-刘泽文
+匿名（双盲评审）
 
 【工作单位】
-齐鲁理工学院 软件工程系，山东 泰安 250000
+匿名（双盲评审）
 
 【中文摘要】
 本文将评估者偏好坍缩（Evaluator Preference Collapse, EPC）现象扩展至多模态智能体系统。当 GPT-4o 作为跨模态评估者评估 DeepSeek-chat 的输出时，观察到极端的偏好坍缩：偏好坍缩指数 PCI 达到 1.464，是纯文本自评估的 3.2 倍，其中 step_by_step 策略吸收了全部策略权重的 48.4%，而视觉特定策略降至 1.0%。进一步揭示了跨模态传染效应：在一种模态上训练形成的评估者偏好会污染另一种模态上的策略选择，传染系数不对称，γ_{V→T}=0.847 > γ_{T→V}=0.832。纯模态训练产生不同的最优策略（文本为 synthesis，视觉为 step_by_step），但经过跨模态暴露后，这些最优策略发生互换——本文称之为偏好传染现象。第三阶段统计验证实验（N=10 次独立重复，共 2000 次 LLM 评估调用）得到 γ̄_{V→T}=1.317 > γ̄_{T→V}=1.239，方向性趋势一致（7/10 次重复），但不对称性未达到统计显著性（自助法 p=0.252）。本文发布了多模态 EPC（MM-EPC）实验框架及首个 LLM 智能体评估的传染矩阵 Γ。
@@ -255,7 +255,7 @@ LLM-as-Judge 社区已将多模型评估确立为最佳实践[1]。本文的发�
 [3] OpenAI. GPT-4o system card[R]. arXiv:2410.21276, 2024.
 
 [4] LIU Z. Evaluator Preference Collapse: Self-evaluation bias in test-time agent evolution[R]. arXiv, 2026.
-刘泽文. 评估者偏好坍缩：测试时智能体进化中的自评估偏差[R]. arXiv, 2026.
+匿名. 评估者偏好坍缩：测试时智能体进化中的自评估偏差[R]. arXiv, 2026.
 
 [5] LI X, ZHANG T, DUBOIS Y, et al. AlpacaEval: An automatic evaluator of instruction-following models[C]//International Conference on Learning Representations, 2024.
 
@@ -298,6 +298,6 @@ LLM-as-Judge 社区已将多模型评估确立为最佳实践[1]。本文的发�
 
 === 作者简介 ===
 
-刘泽文（2003－），男，山东泰安人，本科生，研究方向为人工智能、大语言模型评估、多模态智能体。E-mail: liuzewen@qilu.edu.cn
+匿名（2003－），研究方向为人工智能、大语言模型评估、多模态智能体。
 
 LIU Zewen, born in 2003, B.S. candidate. His research interests include artificial intelligence, LLM evaluation, and multimodal agents.
