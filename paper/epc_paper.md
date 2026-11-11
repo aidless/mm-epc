@@ -1,8 +1,6 @@
 # Evaluator Preference Collapse: Self-Evaluation Bias in Test-Time Agent Evolution
 
-**Liu Zewen**  
-Qilu Institute of Technology, School of Software Engineering  
-Tai'an, Shandong, China  
+**Anonymous Author(s)**  
 `aidless@github` · May 2026
 
 ---

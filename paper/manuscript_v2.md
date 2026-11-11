@@ -1,6 +1,6 @@
 # AE-TTL v2: Real Test-Time Learning for LLM Agents
 
-**Liu Zewen** · 齐鲁理工学院 软件工程 · 2026
+**Anonymous Author(s)** · 2026
 
 ---
 

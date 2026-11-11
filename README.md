@@ -234,7 +234,7 @@ artifacts.
 
 ---
 
-*Liu Zewen (刘泽文) -- Qilu Institute of Technology, 2026*
+*MM-EPC Contributors, 2026*
 
 > **Dual license.** MM-EPC releases the experiments, raw results, and the evidence manifest under
 > MIT; data, documentation, and pre-registration artifacts are released under
