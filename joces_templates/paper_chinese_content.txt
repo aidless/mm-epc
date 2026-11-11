@@ -22,10 +22,10 @@ TP391
 Multimodal Evaluator Preference Collapse: Cross-Modal Contagion in Self-Evolving Agents
 
 【英文作者】
-LIU Zewen
+匿名（双盲评审）
 
 【英文单位】
-School of Software Engineering, Qilu Institute of Technology, Tai'an 250000, China
+匿名（双盲评审）
 
 【英文摘要】
 We extend Evaluator Preference Collapse (EPC) to multimodal agent systems. When GPT-4o serves as a cross-modal evaluator for DeepSeek-chat outputs, we observe extreme preference collapse: PCI reaches 1.464, 3.2× higher than text-only self-evaluation, with step_by_step absorbing 48.4% of all strategy weight and visual-specific strategies dropping to 1.0%. We further demonstrate cross-modal contagion: evaluator preferences trained on one modality contaminate strategy selection on another, with asymmetric coefficients γ_{V→T}=0.847 > γ_{T→V}=0.832. Pure-modality training yields different optimal strategies (synthesis for text, step_by_step for visual), but after cross-modal exposure, these optima swap——a phenomenon we term preference contagion. A Phase 3 statistical validation experiment (N=10 independent repetitions, 2000 total LLM evaluation calls) finds γ̄_{V→T}=1.317 > γ̄_{T→V}=1.239 with consistent directional trend (7/10 reps), though the asymmetry does not reach statistical significance (p=0.252, bootstrap). We release the Multimodal EPC (MM-EPC) experimental framework and the first contagion matrix Γ for LLM agent evaluation.
