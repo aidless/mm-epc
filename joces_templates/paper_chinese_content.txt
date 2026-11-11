@@ -300,4 +300,4 @@ LLM-as-Judge 社区已将多模型评估确立为最佳实践[1]。本文的发�
 
 匿名（2003－），研究方向为人工智能、大语言模型评估、多模态智能体。
 
-LIU Zewen, born in 2003, B.S. candidate. His research interests include artificial intelligence, LLM evaluation, and multimodal agents.
+Anonymous author, B.S. candidate. Research interests include artificial intelligence, LLM evaluation, and multimodal agents.

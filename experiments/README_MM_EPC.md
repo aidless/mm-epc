@@ -75,7 +75,7 @@ If you use this code, please cite our paper:
 ```bibtex
 @article{liu2026mmepc,
   title={Multimodal Evaluator Preference Collapse: Cross-Modal Contagion in Self-Evolving Agents},
-  author={Liu, Zewen},
+  author={Anonymous},
   journal={arXiv preprint},
   year={2026}
 }

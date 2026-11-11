@@ -221,7 +221,7 @@ mm-epc/
 ```bibtex
 @article{liu2026mmepc,
   title={Multimodal Evaluator Preference Collapse: Cross-Modal Coupling in Self-Evolving Agents},
-  author={Liu, Zewen},
+  author={Anonymous},
   journal={arXiv preprint arXiv:2606.16682},
   year={2026}
 }
