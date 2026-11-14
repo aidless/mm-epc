@@ -1,0 +1,129 @@
+{
+ "total": 20,
+ "passed": 20,
+ "failed": 0,
+ "selftest": false,
+ "failed_by_axis": {},
+ "results": [
+  {
+   "id": "mmepc-001",
+   "axis": "metrics-fn",
+   "ok": true,
+   "detail": "0.0"
+  },
+  {
+   "id": "mmepc-002",
+   "axis": "metrics-fn",
+   "ok": true,
+   "detail": "0.693147"
+  },
+  {
+   "id": "mmepc-003",
+   "axis": "metrics-fn",
+   "ok": true,
+   "detail": "1.0"
+  },
+  {
+   "id": "mmepc-004",
+   "axis": "metrics-data",
+   "ok": true,
+   "detail": "0.3"
+  },
+  {
+   "id": "mmepc-005",
+   "axis": "metrics-data",
+   "ok": true,
+   "detail": "30"
+  },
+  {
+   "id": "mmepc-006",
+   "axis": "metrics-data",
+   "ok": true,
+   "detail": "0.0332"
+  },
+  {
+   "id": "mmepc-007",
+   "axis": "self-eval",
+   "ok": true,
+   "detail": "0.967"
+  },
+  {
+   "id": "mmepc-008",
+   "axis": "self-eval",
+   "ok": true,
+   "detail": "negligible"
+  },
+  {
+   "id": "mmepc-009",
+   "axis": "self-eval",
+   "ok": true,
+   "detail": "29"
+  },
+  {
+   "id": "mmepc-010",
+   "axis": "cross-model",
+   "ok": true,
+   "detail": "1.0591"
+  },
+  {
+   "id": "mmepc-011",
+   "axis": "cross-model",
+   "ok": true,
+   "detail": "5"
+  },
+  {
+   "id": "mmepc-012",
+   "axis": "cross-model",
+   "ok": true,
+   "detail": "7"
+  },
+  {
+   "id": "mmepc-013",
+   "axis": "data-integrity",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "id": "mmepc-014",
+   "axis": "data-integrity",
+   "ok": true,
+   "detail": "30"
+  },
+  {
+   "id": "mmepc-015",
+   "axis": "data-integrity",
+   "ok": true,
+   "detail": "16"
+  },
+  {
+   "id": "mmepc-016",
+   "axis": "encoding",
+   "ok": true,
+   "detail": "raised UnicodeDecodeError"
+  },
+  {
+   "id": "mmepc-017",
+   "axis": "encoding",
+   "ok": true,
+   "detail": "0.0067"
+  },
+  {
+   "id": "mmepc-018",
+   "axis": "paper-table",
+   "ok": true,
+   "detail": "5"
+  },
+  {
+   "id": "mmepc-019",
+   "axis": "paper-table",
+   "ok": true,
+   "detail": "30"
+  },
+  {
+   "id": "mmepc-020",
+   "axis": "paper-table",
+   "ok": true,
+   "detail": "97"
+  }
+ ]
+}

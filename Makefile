@@ -7,7 +7,9 @@
 # 新 eval = ci.yml 里 CI 真正跑的那一段（逻辑逐字搬自该文件，只去掉 GitHub Action 外壳）：
 #   1) `python3 -m compileall -q .` —— 全部 tracked Python 必须能字节编译；
 #   2) 证据目录存在 + 全部 JSON 可解析（GBK 回退、截断文件单列，与 ci.yml 同口径）。
-# 实测：compileall 绿；JSON 全解析通过。
+#   3) `python3 eval/run_cases.py` —— eval/cases.jsonl 的 20 条题目必须 20/20 通过
+#      （其中 12+ 条真调 compute_bounded_metrics.py 的函数或真解析 experiments/*.json）。
+# 实测：compileall 绿；JSON 全解析通过；run_cases 20/20。
 .PHONY: eval
 .ONESHELL:
 SHELL := /bin/bash
@@ -17,3 +19,4 @@ eval:
 	python3 -m compileall -q .
 	echo "[eval] compileall OK — 全部 tracked Python 通过字节编译"
 	@python3 -c $$'import json, pathlib, sys\nmissing = [d for d in ("experiments", "arxiv_submission") if not pathlib.Path(d).is_dir()]\nif missing:\n    sys.exit(f"[eval] missing evidence directories: {missing}")\njsons = [j for j in pathlib.Path(".").rglob("*.json") if ".git" not in j.parts]\nif not jsons:\n    sys.exit("[eval] no JSON evidence files found at all")\nok, truncated, broken = 0, [], []\nfor j in jsons:\n    raw = j.read_bytes()\n    try:\n        text = raw.decode("utf-8")\n    except UnicodeDecodeError:\n        text = raw.decode("gbk", errors="replace")\n    try:\n        json.loads(text)\n        ok += 1\n    except Exception:\n        if \'"significant"\' in text and text.rstrip().endswith(\'"significant":\'):\n            truncated.append(str(j))\n        else:\n            broken.append(str(j))\nprint(f"[eval] parsed {ok}/{len(jsons)} JSON evidence files")\nif truncated:\n    print(f"[eval] {len(truncated)} truncated (interrupted writes; 与本仓 CI 同口径不判红): {truncated[:3]}")\nif broken:\n    sys.exit(f"[eval] not JSON: {broken[:5]}")\nprint("[eval] evidence gate OK — passed")\n'
+	python3 eval/run_cases.py

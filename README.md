@@ -239,3 +239,62 @@ artifacts.
 > **Dual license.** MM-EPC releases the experiments, raw results, and the evidence manifest under
 > MIT; data, documentation, and pre-registration artifacts are released under
 > CC BY 4.0.
+
+## 验收标准与复算
+
+**验收判据（可机器判定）**：本仓判为合格的条件是 `python3 eval/run_cases.py` 通过率必须为
+100%（20/20），且 `make eval` 退出码必须为 0；任何一条 case 失败即判为不合格。
+
+`make eval` 依次跑三件事：`python3 -m compileall -q .`、证据 JSON 全解析（GBK 回退、
+截断文件单列，与 `.github/workflows/ci.yml` 同口径）、以及 `python3 eval/run_cases.py`。
+
+### 验收题库（`eval/cases.jsonl`，20 条）
+
+字段固定为 `id/axis/question/expected/mode/verify/source`；`mode` 只用 `expr`（执行 `verify`
+后比较变量 `result`）与 `raises`（断言异常类型名）。20 条全部真调本仓代码或真解析本仓数据
+文件，期望值由数据现算（不是抄本 README 的表格）。
+
+| axis | 条数 | 测什么 | 期望值来源 |
+|---|---|---|---|
+| metrics-fn | 3 | `compute_bounded_metrics.py` 的 `jsd`/`hellinger` 边界行为（自散度 0、不重叠支撑集 ln2 / 1） | 从源码 AST 取出函数体直接调用 |
+| metrics-data | 3 | `tv()` 数值、`mm_epc_multi_seed_ds_final.json` 的 N=30、per-rep γ_TV 均值 0.0332 | 结果 JSON 现算 |
+| self-eval | 3 | 自我评估近免疫：`zero_rate`=0.967、`effect_size`=negligible、`direction=symmetric` 29/30 | 同上 `statistics` 字段 |
+| cross-model | 3 | Qwen3.7 γ_TV 均值 1.0591、GPT-4o T→V 计数 5/8、real-image T→V 计数 7/10 | `qwen37_checkpoint.json` / `mm_epc_gpt4o_replication.json` / `real_image_checkpoint.json` |
+| data-integrity | 3 | real-image 行 0 条带 `w_T`（JSD 不可离线重算的机器证据）、多 seed 30 条权重齐全、Phase1 `rounds`=16 | checkpoint JSON |
+| encoding | 2 | `mm_epc_phase3_bootstrap.json` 为 GBK 落盘：utf-8 读必抛 `UnicodeDecodeError`，GBK 读出的 CI 下界 0.0067 | 文件原始字节 |
+| paper-table | 3 | `statistical_table.tex` 数据行 5 条；DeepSeek 行 N=30、Zero%=97 与 JSON `zero_rate` 对表 | tex 与 JSON 交叉 |
+
+### 三条命令（在仓库根执行）
+
+```bash
+python3 eval/run_cases.py             # 必须 20/20，退出码 0
+python3 eval/run_cases.py --selftest  # 期望 19/20 变红（篡改第 1 条期望值），退出码 0
+python3 eval/run_cases.py --save      # 结果落盘 eval/run-report.json
+```
+
+### 复算
+
+- **γ 均值**：`mm_epc_multi_seed_ds_final.json` 里 30 条 `results[*].gamma_TV` 直接求均值，
+  与 `statistics.mean_gamma_TV`（0.0332）对表；`zero_rate` 由 `n_zero_contagion / N` 复核。
+- **JSD/Hellinger 可复算的边界**：只有带 `w_T/w_V/w_TV/w_VT` 四个权重的 checkpoint 能重算；
+  GPT-4o text-proxy 与 real-image 两行的记录里**没有 `w_T`**，本题库用
+  `mmepc-013`（带 `w_T` 的 real-image 记录数 = 0）把这条限制钉成可执行断言，而不是靠 README 自述。
+- **论文表**：`statistical_table.tex` 的 DeepSeek 行（N=30、γ 0.033/0.023、Zero% 97）与
+  JSON 逐列交叉，`mmepc-020` 会用 `zero_rate × 100` 反查该行的 97%。
+- **编码**：`mm_epc_phase3_bootstrap.json` / `mm_epc_phase3_final.json` / `mm_epc_phase3_incremental.json`
+  是 GBK 落盘，任何复算脚本都要 `encoding="gbk"`，否则必抛 `UnicodeDecodeError`（`mmepc-016` 钉住这一点）。
+- 无 API key、无网络：本题库不调用任何 LLM 端点，`make eval` 可离线跑。
+
+### 失败归因（按 axis 汇总）
+
+`run_cases.py` 不只报一个 pass_rate，失败时按 axis 归类，便于定位「是哪一类断言退化」。
+`--selftest` 的实测输出即为示例：
+
+```
+失败归因（按 axis）：
+  metrics-fn: 1 条 —— mmepc-001
+```
+
+若 `paper-table` 整列变红，说明表格与 JSON 不再一致（改数字没改表，或反之）；
+若 `data-integrity` 变红，说明 checkpoint 里权重向量被裁掉，JSD 从此不可重算；
+若 `encoding` 变红，说明有 phase3 结果被重新以 utf-8 落盘（CI 的 GBK 回退会静默接受，题库不会）。
