@@ -6,7 +6,7 @@ No API calls needed - purely computational.
 Runs N repetitions to get stable mean and confidence interval.
 """
 
-import random, json, os, math
+import random, json, os
 from copy import deepcopy
 
 STRATEGIES = {
@@ -121,9 +121,9 @@ for rounds in ROUNDS_LIST:
 # The weights don't converge to any point, they wander randomly
 # But the EXPECTED distribution is still uniform
 # So PCI(random, asymptotic) ≈ 0
-print(f"\n=== Theoretical ===")
-print(f"  PCI(uniform distribution) = 0.0000 (all weights equal)")
-print(f"  PCI(random evaluator, infinite rounds) → 0.0000")
+print("\n=== Theoretical ===")
+print("  PCI(uniform distribution) = 0.0000 (all weights equal)")
+print("  PCI(random evaluator, infinite rounds) → 0.0000")
 
 # Save
 os.makedirs("experiments", exist_ok=True)

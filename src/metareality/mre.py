@@ -1,7 +1,6 @@
 # src/metareality/mre.py
 
 import threading
-import queue
 
 
 class MetaRealityEngine:

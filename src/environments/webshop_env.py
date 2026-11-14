@@ -33,7 +33,7 @@ class MiniWebShopEnv:
         if action.startswith("search"):
             self.state = "list"
             query = action.split("[")[1].split("]")[0] if "[" in action else "laptop"
-            self.current_page_content = f"List View: [Item_A: Laptop Pro $999] [Item_B: Phone X $699] [Item_C: Python Book $49]"
+            self.current_page_content = "List View: [Item_A: Laptop Pro $999] [Item_B: Phone X $699] [Item_C: Python Book $49]"
             self.reward = 0.1
 
         elif action.startswith("click"):

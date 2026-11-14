@@ -1,5 +1,5 @@
 """Test: run train_phase with just 2 rounds to debug"""
-import json, urllib.request, re, time, os, sys
+import json, urllib.request, re, time, sys
 from copy import deepcopy
 import random
 
@@ -72,15 +72,15 @@ def train_phase(name, task_list, initial_weights, rounds, eval_fn):
         print(f"  Round {i+1}: strategy={st}, task={tk['q'][:30]}", flush=True)
         
         try:
-            print(f"    Calling DS (strategy agent)...", flush=True)
+            print("    Calling DS (strategy agent)...", flush=True)
             o = ds(f"你是专家AI。策略：{STRATEGIES[st]}", tk["q"])
             print(f"    DS response: {o[:50]}...", flush=True)
             
-            print(f"    Calling DS (baseline)...", flush=True)
+            print("    Calling DS (baseline)...", flush=True)
             c = ds("你是专家AI。策略：逐步推理。", tk["q"])
             print(f"    DS baseline: {c[:50]}...", flush=True)
             
-            print(f"    Calling GPT-4o eval...", flush=True)
+            print("    Calling GPT-4o eval...", flush=True)
             wn = eval_fn(tk["q"], o, c, st)
             print(f"    GPT-4o result: {wn}", flush=True)
             

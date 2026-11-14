@@ -1,8 +1,7 @@
 """
 Post-processing: read phase3 results, update statistical_table.tex, recompile paper.
 """
-import json, os, sys, re, shutil, subprocess
-import numpy as np
+import json, os, shutil, subprocess
 
 RESULT_FILE = r"C:\Users\Administrator\Desktop\aettl-research\experiments\mm_epc_phase3_final.json"
 TABLE_FILE = r"C:\Users\Administrator\Desktop\aettl-research\experiments\statistical_table.tex"

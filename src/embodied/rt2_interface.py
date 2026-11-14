@@ -2,7 +2,6 @@
 
 import torch
 import torch.nn as nn
-from torchvision import transforms
 import clip # 假设已安装 torch.clip
 
 

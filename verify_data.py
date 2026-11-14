@@ -2,7 +2,7 @@
 自检脚本：读实验输出 JSON，验证数据完整性
 防止 "0轮完成但声称成功" 的问题
 """
-import json, os, sys
+import json, os
 
 def verify_experiment(path):
     """检查实验输出是否真实有效"""
@@ -79,4 +79,4 @@ for f in sorted(os.listdir(base)):
 if all_ok:
     print("\n全部实验数据通过验证")
 else:
-    print(f"\n⚠️  发现问题，需要重新运行")
+    print("\n⚠️  发现问题，需要重新运行")

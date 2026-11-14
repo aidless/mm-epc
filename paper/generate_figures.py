@@ -8,7 +8,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
-import json, os
+import os
 
 # ============================================================
 # Global style — publication quality, dark-friendly but print-safe

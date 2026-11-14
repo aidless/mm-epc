@@ -1,5 +1,5 @@
 """Minimal test: simulate one round of train_phase with debug"""
-import json, urllib.request, re, time, os, sys
+import json, urllib.request, re, sys
 
 sys.stdout.reconfigure(line_buffering=True)
 

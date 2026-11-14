@@ -1,6 +1,6 @@
 # src/safety/constitutional_guard.py
 
-from typing import List, Dict
+from typing import Dict
 
 
 class ConstitutionalGuard:

@@ -33,8 +33,6 @@ def _load_key(name: str) -> str:
 
 
 import json, os, time, urllib.request, random
-from collections import deque
-from datetime import datetime
 
 # ── Keys ──
 env_path = "/mnt/c/Users/Administrator/Desktop/ai-agent-playground/.env"
@@ -186,7 +184,7 @@ class EvolutionV4:
             
             # Control: use fixed "step_by_step" strategy
             control_output = llm_deepseek(
-                f"你是专家AI。策略：逐步推理。",
+                "你是专家AI。策略：逐步推理。",
                 up, temp=0.7, mt=600
             )
             
@@ -237,7 +235,7 @@ class EvolutionV4:
     
     def run_benchmark(self, tasks, rounds=100):
         print(f"🔥 PHOENIX v4 — {rounds}轮进化")
-        print(f"  修复: 交叉模型评估 | A/B排序 | 多类型任务 | 基准验证 | 对照组")
+        print("  修复: 交叉模型评估 | A/B排序 | 多类型任务 | 基准验证 | 对照组")
         print(f"  任务: {len(tasks)}个 ({','.join(set(t['type'] for t in tasks))})")
         print()
         
@@ -303,7 +301,7 @@ TTRL vs 对照(固定step_by_step):
         bar = "█" * v
         print(f"  {k:20s} {v:2d}胜 {bar}")
     
-    print(f"""
+    print("""
 最终策略权重:
 """)
     for k, v in sorted(results['final_weights'].items(), key=lambda x: -x[1]):
@@ -318,6 +316,6 @@ TTRL vs 对照(固定step_by_step):
     
     # Save
     os.makedirs("/mnt/c/Users/Administrator/Desktop/aettl-research/experiments", exist_ok=True)
-    with open(f"/mnt/c/Users/Administrator/Desktop/aettl-research/experiments/v4_final.json","w") as f:
+    with open("/mnt/c/Users/Administrator/Desktop/aettl-research/experiments/v4_final.json","w") as f:
         json.dump(results, f, indent=2, ensure_ascii=False, default=str)
     print("💾 experiments/v4_final.json")

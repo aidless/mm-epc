@@ -54,4 +54,4 @@ class HiveMindOrchestrator:
             a, b = nodes[0], nodes[-1]
             result = self.graph.nodes[a]['data'].encounter_neighbor(self.graph.nodes[b]['data'])
             if result["merged"]:
-                print(f"✨ 涌现奇迹：新策略产生！全局鲁棒性提升。")
+                print("✨ 涌现奇迹：新策略产生！全局鲁棒性提升。")

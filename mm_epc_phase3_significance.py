@@ -7,10 +7,8 @@ Goal: Run 50-round contagion experiments to establish:
   3. Statistical power analysis
 """
 
-import json, time, urllib.request, random, re, os, math, numpy as np
+import json, time, urllib.request, random, re, os, numpy as np
 from copy import deepcopy
-from collections import defaultdict
-from scipy import stats
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -178,22 +176,22 @@ def run_full_experiment(repetitions=10, rounds_per_phase=50):
         init = {k: 1/len(STRATEGIES) for k in STRATEGIES}
         
         # Phase A: Pure text
-        print(f"  Phase A: Pure text training...", flush=True)
+        print("  Phase A: Pure text training...", flush=True)
         w_T, _ = train_phase("pure_text", TEXT_TASKS, init, rounds_per_phase, qwen_eval)
         print(f"  Phase A done ({time.time()-t0:.0f}s)", flush=True)
         
         # Phase B: Pure visual
-        print(f"  Phase B: Pure visual training...", flush=True)
+        print("  Phase B: Pure visual training...", flush=True)
         w_V, _ = train_phase("pure_visual", VISUAL_TASKS, init, rounds_per_phase, qwen_eval)
         print(f"  Phase B done ({time.time()-t0:.0f}s)", flush=True)
         
         # Phase C: Contagion T → V
-        print(f"  Phase C: Contagion T->V...", flush=True)
+        print("  Phase C: Contagion T->V...", flush=True)
         w_TV, _ = train_phase("contagion_TV", VISUAL_TASKS, w_T, rounds_per_phase, qwen_eval)
         print(f"  Phase C done ({time.time()-t0:.0f}s)", flush=True)
         
         # Phase D: Contagion V → T
-        print(f"  Phase D: Contagion V->T...", flush=True)
+        print("  Phase D: Contagion V->T...", flush=True)
         w_VT, _ = train_phase("contagion_VT", TEXT_TASKS, w_V, rounds_per_phase, qwen_eval)
         print(f"  Phase D done ({time.time()-t0:.0f}s)", flush=True)
         

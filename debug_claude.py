@@ -22,7 +22,7 @@ def _load_key(name: str) -> str:
     )
 
 
-import json,time,urllib.request,random,re,os,traceback
+import json,urllib.request,re,traceback
 
 DS_KEY=''
 with open('/mnt/c/Users/Administrator/Desktop/ai-agent-playground/.env') as f:
@@ -77,5 +77,5 @@ try:
     print(f"Claude: '{txt}'", flush=True)
     print("SUCCESS", flush=True)
 except Exception as e:
-    print(f"FAIL:", flush=True)
+    print("FAIL:", flush=True)
     traceback.print_exc()

@@ -5,7 +5,7 @@ PHOENIX MONSTER v2 — 真实 LLM 驱动的自进化智能体
 保持 10 模块架构，核心创新 TTRL (Test-Time Reinforcement Learning) 真实运作
 """
 
-import sys, os, json, math, random, time
+import sys, os, json, random, time
 from collections import deque
 from datetime import datetime
 import numpy as np
@@ -387,7 +387,7 @@ class PhoenixMonsterV2:
                     print(f"  🛑 宪法拦截: {msg}")
                     output, repaired = self.repair.attempt_repair(task, output, msg, strategy)
                     if repaired:
-                        print(f"  🔧 已修复")
+                        print("  🔧 已修复")
 
                 # TTRL 自评 + 权重更新
                 score, eval_detail = self.ttrl.evaluate_and_update(task, strategy, output)

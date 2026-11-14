@@ -1,6 +1,5 @@
 # src/neuro/chip_edge_logic.py
 
-import time
 
 class LeakyIntegrateFireNeuron:
     """

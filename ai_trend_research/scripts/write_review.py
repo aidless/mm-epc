@@ -9,8 +9,7 @@ import os
 import json
 import argparse
 import logging
-from datetime import datetime
-from typing import Dict, Any, List, Tuple
+from typing import List
 
 # 添加项目根目录到路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -49,7 +48,7 @@ class ReviewWriter:
         try:
             with open(self.analysis_file, 'r', encoding='utf-8') as f:
                 self.analysis_results = json.load(f)
-            logger.info(f"成功加载分析结果")
+            logger.info("成功加载分析结果")
             return True
         except Exception as e:
             logger.error(f"加载分析结果失败：{e}")
@@ -632,17 +631,17 @@ AI安全（AI Safety）成为一个专门的研究领域：
             f.write(review_content)
         
         logger.info("=" * 60)
-        logger.info(f"综述论文撰写完成！")
+        logger.info("综述论文撰写完成！")
         logger.info(f"论文文件：{self.review_file}")
         logger.info(f"文件大小：{len(review_content)} 字符")
         logger.info("=" * 60)
         
         # 打印论文摘要
         logger.info("\n论文已生成，您可以使用Markdown编辑器查看或转换为PDF/Word格式。")
-        logger.info(f"建议下一步：")
+        logger.info("建议下一步：")
         logger.info(f"  1. 查看论文：{self.review_file}")
-        logger.info(f"  2. 根据需要进行人工编辑和润色")
-        logger.info(f"  3. 使用Pandoc等工具转换为PDF或Word：")
+        logger.info("  2. 根据需要进行人工编辑和润色")
+        logger.info("  3. 使用Pandoc等工具转换为PDF或Word：")
         logger.info(f"     pandoc {self.review_file} -o ai_trend_review.pdf")
         
         return True

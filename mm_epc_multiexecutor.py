@@ -27,7 +27,7 @@ def _load_key(name: str) -> str:
     )
 
 
-import json, os, re, random, time, sys, urllib.request
+import json, os, random, time, sys, urllib.request
 from copy import deepcopy
 
 API2D_KEY = _load_key("API2D_KEY")

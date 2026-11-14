@@ -22,7 +22,7 @@ def _load_key(name: str) -> str:
     )
 
 
-import json,time,urllib.request,random,re,os,traceback,sys
+import json,time,urllib.request,random,re,traceback,sys
 
 DS_KEY=''
 with open('/mnt/c/Users/Administrator/Desktop/ai-agent-playground/.env') as f:

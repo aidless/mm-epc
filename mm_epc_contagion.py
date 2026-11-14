@@ -180,11 +180,11 @@ Contagion coefficients:
 
 if gamma_TV != gamma_VT:
     direction = "Text->Visual" if gamma_TV > gamma_VT else "Visual->Text"
-    print(f"  ✅ ASYMMETRIC CONTAGION DETECTED!")
+    print("  ✅ ASYMMETRIC CONTAGION DETECTED!")
     print(f"     {direction} contagion is stronger ({max(gamma_TV,gamma_VT)} vs {min(gamma_TV,gamma_VT)})")
     print(f"     Asymmetry ratio: {asymmetry}")
 else:
-    print(f"  ⚠️ Symmetric contagion")
+    print("  ⚠️ Symmetric contagion")
 
 print(f"""
 Weight comparison:

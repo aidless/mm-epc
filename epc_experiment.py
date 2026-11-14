@@ -10,7 +10,6 @@ EPC Experiment: Evaluator Preference Collapse
 """
 
 import json, time, urllib.request, random, re, os
-from collections import Counter
 from datetime import datetime
 
 DS_KEY = ""
@@ -245,7 +244,7 @@ if __name__ == "__main__":
     pci_self = results["A_SELF"]["pci"]
     pci_cross = results["B_CROSS"]["pci"]
     
-    print(f"\n🔬 Key Findings:")
+    print("\n🔬 Key Findings:")
     print(f"   PCI(Self-Eval)  = {pci_self:.4f}")
     print(f"   PCI(Cross-Role) = {pci_cross:.4f}")
     print(f"   PCI Δ           = {pci_self - pci_cross:+.4f}")
@@ -253,10 +252,10 @@ if __name__ == "__main__":
     if pci_self > pci_cross:
         print(f"\n   ✅ EPC CONFIRMED: Self-eval shows {((pci_self-pci_cross)/pci_cross*100):.0f}% more collapse than cross-role")
     else:
-        print(f"\n   ⚠️ EPC not detected in this run — need more rounds")
+        print("\n   ⚠️ EPC not detected in this run — need more rounds")
     
     # Strategy divergence between conditions
-    print(f"\n   Strategy ranking by condition:")
+    print("\n   Strategy ranking by condition:")
     for name, r in results.items():
         weights = sorted(r["final_weights"].items(), key=lambda x: -x[1])
         top3 = [f"{k}({v:.0%})" for k, v in weights[:3]]
@@ -271,7 +270,7 @@ if __name__ == "__main__":
         "pci_delta": round(pci_self - pci_cross, 4),
         "epc_detected": pci_self > pci_cross,
     }
-    filename = f"/mnt/c/Users/Administrator/Desktop/aettl-research/experiments/epc_experiment.json"
+    filename = "/mnt/c/Users/Administrator/Desktop/aettl-research/experiments/epc_experiment.json"
     with open(filename, "w") as f:
         json.dump(report, f, indent=2, ensure_ascii=False, default=str)
     print(f"\n💾 {filename}")

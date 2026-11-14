@@ -23,7 +23,7 @@ def _load_key(name: str) -> str:
     )
 
 
-import urllib.request, json, re, os, sys
+import urllib.request, json, re, os
 
 # Read DeepSeek key
 DS_KEY = ""

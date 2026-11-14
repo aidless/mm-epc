@@ -1,8 +1,6 @@
 # src/research/auto_scientist.py
 
-import json
 from typing import Dict, List
-from datetime import datetime
 
 
 class AutoScientist:

@@ -40,7 +40,7 @@ for traj in all_trajectories:
 success_rate = (success_count / len(all_trajectories)) * 100 if len(all_trajectories) > 0 else 0
 avg_steps = np.mean(step_counts)
 
-print(f"📊 统计结果：")
+print("📊 统计结果：")
 print(f"   - 成功率：{success_rate:.1f}%")
 print(f"   - 平均步数：{avg_steps:.1f}")
 

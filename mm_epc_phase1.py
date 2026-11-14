@@ -33,9 +33,7 @@ def _load_key(name: str) -> str:
     )
 
 
-import json, time, urllib.request, random, re, os, sys
-from collections import Counter
-from datetime import datetime
+import json, time, urllib.request, random, re, os
 
 # Keys
 DS_KEY = ""
@@ -254,7 +252,7 @@ if __name__ == "__main__":
     
     print(f"Task: {len(TEXT_TASKS)} text + {len(VISUAL_TASKS)} visual = {len(ALL_TASKS)} total")
     print(f"Strategies: {len(STRATEGIES)} (8 text + 3 visual)")
-    print(f"Evaluator: GPT-4o (cross-model)")
+    print("Evaluator: GPT-4o (cross-model)")
     print()
     
     result = run_condition("MM_EPC", gpt4o_eval, rounds_per_modality=8)
@@ -291,13 +289,13 @@ Strategy weights:
 """)
     
     if result['text_top'] != result['visual_top']:
-        print(f"  ✅ CROSS-MODAL DIVERGENCE DETECTED!")
+        print("  ✅ CROSS-MODAL DIVERGENCE DETECTED!")
         print(f"     Text optimal: {result['text_top']} ≠ Visual optimal: {result['visual_top']}")
-        print(f"     The evaluator prefers different strategies for different modalities.")
+        print("     The evaluator prefers different strategies for different modalities.")
     
     # Save
     os.makedirs("/mnt/c/Users/Administrator/Desktop/aettl-research/experiments", exist_ok=True)
-    filename = f"/mnt/c/Users/Administrator/Desktop/aettl-research/experiments/mm_epc_phase1.json"
+    filename = "/mnt/c/Users/Administrator/Desktop/aettl-research/experiments/mm_epc_phase1.json"
     with open(filename, "w") as f:
         json.dump(result, f, indent=2, ensure_ascii=False, default=str)
     print(f"\n💾 {filename}")

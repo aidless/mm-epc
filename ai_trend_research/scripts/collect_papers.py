@@ -11,7 +11,6 @@ import json
 import argparse
 import logging
 import xml.etree.ElementTree as ET
-from datetime import datetime
 from typing import List, Dict, Any, Optional
 
 # 尝试导入requests，如果失败则提示安装
@@ -134,7 +133,7 @@ class ArxivCollector:
             logger.error("提示：检查网络连接，或ArXiv是否可访问")
             return None
         except requests.exceptions.Timeout:
-            logger.error(f"请求超时（120秒）")
+            logger.error("请求超时（120秒）")
             return None
         except Exception as e:
             logger.error(f"获取论文批次失败 (start={start})：{e}")
@@ -280,7 +279,7 @@ class ArxivCollector:
             json.dump(final_papers, f, ensure_ascii=False, indent=2)
         
         logger.info("=" * 60)
-        logger.info(f"数据收集完成！")
+        logger.info("数据收集完成！")
         logger.info(f"总计收集：{len(final_papers)} 篇论文（去重后）")
         logger.info(f"数据文件：{self.papers_file}")
         logger.info("=" * 60)

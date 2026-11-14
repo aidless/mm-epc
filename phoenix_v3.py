@@ -4,8 +4,8 @@ PHOENIX MONSTER v3 — 百轮自进化 + 300篇论文反思
 论文采集 → 洞察提取 → 策略进化 → 任务求解 → 自我反思 → (循环100轮)
 """
 
-import urllib.request, urllib.parse, json, os, sys, time, re
-from collections import deque, Counter
+import urllib.request, urllib.parse, json, os, sys, time
+from collections import Counter
 from datetime import datetime
 import xml.etree.ElementTree as ET
 
@@ -73,7 +73,7 @@ class PaperCollector:
         
     def fetch(self, max_per_query=20):
         print(f"\n{'='*60}")
-        print(f"📚 PHASE 1: 论文采集 — ArXiv API")
+        print("📚 PHASE 1: 论文采集 — ArXiv API")
         print(f"{'='*60}")
         
         for query in self.SEARCH_QUERIES:
@@ -344,7 +344,6 @@ TASK_BANK = [
 ]
 
 if __name__ == "__main__":
-    import random
     
     print("""
 ╔══════════════════════════════════════════════════════╗
@@ -406,24 +405,24 @@ if __name__ == "__main__":
     ttrl_gain = last_20_avg - first_20_avg
     
     print(f"\n{'='*60}")
-    print(f"🏆 PHOENIX MONSTER v3 — 百轮进化完成")
+    print("🏆 PHOENIX MONSTER v3 — 百轮进化完成")
     print(f"{'='*60}")
     print(f"   论文阅读:     {len(papers)} 篇")
     print(f"   提取洞察:     {len(insights)} 条")
-    print(f"   进化轮数:     100 轮")
+    print("   进化轮数:     100 轮")
     print(f"   总LLM调用:    {engine.total_calls} 次")
     print(f"   总耗时:       {elapsed:.0f}s ({elapsed/60:.1f}分)")
-    print(f"")
+    print("")
     print(f"   最终均分:     {final_avg:.3f}")
     print(f"   前20轮均分:   {first_20_avg:.3f}")
     print(f"   后20轮均分:   {last_20_avg:.3f}")
     print(f"   TTRL进化增益: {ttrl_gain:+.3f} ({ttrl_gain*100:+.1f}%)")
-    print(f"")
-    print(f"   最终策略排名:")
+    print("")
+    print("   最终策略排名:")
     for k, v in sorted(engine.weights.items(), key=lambda x: -x[1]):
         bar = "█" * int(v * 80)
         print(f"     {k:20s} {v:.3f} {bar}")
-    print(f"")
+    print("")
     print(f"   被淘汰策略: {min(engine.weights, key=engine.weights.get)}")
     print(f"   最优策略:   {max(engine.weights, key=engine.weights.get)}")
     print(f"{'='*60}")

@@ -190,7 +190,7 @@ for rep in range(start,N+1):
 
 gtt=[r["gTT"] for r in results]; gvv=[r["gVV"] for r in results]
 print(f"\nSame-Modality Controls: g_TT(inertia)={sum(gtt)/N:.3f} g_VV(inertia)={sum(gvv)/N:.3f}")
-print(f"Compare to cross-modal: gamma ~1.1 (GPT-4o)")
+print("Compare to cross-modal: gamma ~1.1 (GPT-4o)")
 if results and results[0].get("corr_T") is not None:
     cT = [r["corr_T"] for r in results]; cTT = [r["corr_TT"] for r in results]
     print(f"Correctness: T={sum(cT)/len(cT):.1f}/{R} T->T={sum(cTT)/len(cTT):.1f}/{R}")
